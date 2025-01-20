@@ -776,8 +776,10 @@ export async function handler(chatUpdate) {
             [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] :
             [[[], new RegExp]]
       ).find((p) => p[1]);
-      if (typeof plugin.before === 'function') {
-        if (await plugin.before.call(this, m, {
+      
+      if (typeof plugin.before === 'function') {  
+       
+        const data  = await plugin.before.call(this, m, {
           match,
           conn: this,
           participants,
@@ -793,20 +795,24 @@ export async function handler(chatUpdate) {
           chatUpdate,
           __dirname: ___dirname,
           __filename,
-        })) {
+        }) 
+        if (data) {
           continue;
         }
       }
       if (typeof plugin !== 'function') {
         continue;
       }
-      if ((usedPrefix = (match[0] || '')[0])) {
+      if (plugin.numberReply ||  (usedPrefix = (match[0] || '')[0])) {  
+        const usedPrefix = (match[0] || '')[0] 
         const noPrefix = m.text.replace(usedPrefix, '');
         let [command, ...args] = noPrefix.trim().split` `.filter((v) => v);
         args = args || [];
-        const _args = noPrefix.trim().split` `.slice(1);
+        const _args =  noPrefix.trim().split` `.slice(1);
         const text = _args.join` `;
-        command = (command || '').toLowerCase();
+        command =  plugin.numberReply ? m.message?.extendedTextMessage?.text || "" : (command || '').toLowerCase();
+        
+        
         const fail = plugin.fail || global.dfail; // When failed
         const isAccept = plugin.command instanceof RegExp ? // RegExp Mode?
           plugin.command.test(command) :
@@ -817,12 +823,12 @@ export async function handler(chatUpdate) {
             ) :
             typeof plugin.command === 'string' ? // String?
               plugin.command === command :
-              false;
-
+              false; 
         if (!isAccept) {
           continue;
-        }
+        } 
         m.plugin = name;
+        console.log(name)
         if (m.chat in global.db.data.chats || m.sender in global.db.data.users) {
           const chat = global.db.data.chats[m.chat];
           const user = global.db.data.users[m.sender];
@@ -1000,7 +1006,7 @@ ${tradutor.texto1[1]} ${messageNumber}/3
           }
         }
         break;
-      }
+      } 
     }
   } catch (e) {
     console.error(e);
