@@ -25,8 +25,8 @@ const handler = async (m, {conn, args, usedPrefix, command}) => {
 handler.command = /^(gdrive)$/i;
 export default handler;
 async function GDriveDl(url) {
-  const {data} =await fetch(`https://api.nexoracle.com/downloader/gdrive?apikey=MepwBcqIM0jYN0okD&url=${url}`)
-  
+  const res =await fetch(`https://api.nexoracle.com/downloader/gdrive?apikey=MepwBcqIM0jYN0okD&url=${url}`)
+  const data = await res.json() 
   return {downloadUrl:data.downloadUrl, fileName:data.fileName, fileSize: formatSize(data.fileSizeB), mimetype: data.mimetype};
 /*  if (!(url && url.match(/drive\.google/i))) throw 'Invalid URL';
   id = (url.match(/\/?id=(.+)/i) || url.match(/\/d\/(.*?)\//))[1];
