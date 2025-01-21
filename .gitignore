@@ -5,6 +5,8 @@ jadibts
 pluginpilot
 plugins/supersecretlistener.js
 package-lock.json
+*_database.json
+
 
 # Local Databases
 src/glx/db/database.json

@@ -145,7 +145,7 @@ const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n�
     }
 
     
-    await sendFile(conn,m,res.mimetype,caption,fileName,data.size,{buffer:buffer})
+    await sendFile(conn,m,res.mimetype,caption,fileName,data.size,{url:res.downloadUrl})
 
     }else  if(data.gdriveLink2 && typeof data.gdriveLink2 === "string"){
       
@@ -166,7 +166,7 @@ const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n�
        const type = await fileType.fromBuffer(data); 
        const mime = type?.mime;
 
-       await sendFile(conn,m,mime,caption,fileName,data.size,{url:res.downloadUrl})
+       await sendFile(conn,m,mime,caption,fileName,data.size,{buffer:buffer})
     }
 
   } catch (e) {
