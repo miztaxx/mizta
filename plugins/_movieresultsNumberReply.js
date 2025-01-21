@@ -94,11 +94,15 @@ const handleMovies = async(conn,m,movie)=>{
     message += `🌍 *Country:*\n${details.country}\n\n`;
     message += `⏱️ *Runtime:*\n${details.runtime}\n\n`;
     message += `🎭 *Genres:*\n${details.genres.join(", ")}\n\n`;
-    message += `⬇️ *Download Links:*\n`;
-
+    message += `⚡ *Download Links:*\n`;
+   
     details.downloadLinks.forEach((link, index) => { 
       message += `   *${index+1} ${link.quality} [ ${link.size} ]*\n`; 
-    });
+   
+   
+  });
+   
+    message += `\n> ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙`;
 
 
     // Send the image and message
@@ -130,7 +134,7 @@ const downloadMovie = async(conn,m,data,title)=>{
   
   const downloadlInkUrl = `https://cinesubz.mizta-x.com/movie-direct?url=${data.link}`;
 const fileName = title + +"_"+ data.quality?.trim()?.replace(" ","_")
-const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n📂 *Size:* ${data.size}`
+const caption = `🎬 *Title:* ${title}\n> ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙`
 const size = data.size
   try {
 
