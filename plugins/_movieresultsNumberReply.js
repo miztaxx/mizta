@@ -131,6 +131,7 @@ const downloadMovie = async(conn,m,data,title)=>{
   const downloadlInkUrl = `https://cinesubz.mizta-x.com/movie-direct?url=${data.link}`;
 const fileName = title + +"_"+ data.quality?.trim()?.replace(" ","_")
 const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n📂 *Size:* ${data.size}`
+const size = data.size
   try {
 
     const response = await fetch(downloadlInkUrl);
@@ -142,10 +143,9 @@ const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n�
     const res = await fg.GDriveDl(link);
     if (!res || !res.downloadUrl) {
       throw new Error('Failed to fetch downloadlink.');
-    }
-
+    } 
     
-    await sendFile(conn,m,res.mimetype,caption,fileName,data.size,{url:res.downloadUrl})
+    await sendFile(conn,m,res.mimetype,caption,fileName,size,{url:res.downloadUrl})
 
     }else  if(data.gdriveLink2 && typeof data.gdriveLink2 === "string"){
       
@@ -156,7 +156,7 @@ const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n�
       }
 
       
-      await sendFile(conn,m,res.mimetype,caption,fileName,data.size,{url:res.downloadUrl})
+      await sendFile(conn,m,res.mimetype,caption,fileName,size,{url:res.downloadUrl})
 
     }else  if(data.directLink && typeof data.directLink === "string"){
        const buffer = await getBuffer(data.directLink)
@@ -166,7 +166,7 @@ const caption = `🎬 *Title:* ${title}\n📽️ *Quality:* ${data.quality}\n�
        const type = await fileType.fromBuffer(data); 
        const mime = type?.mime;
 
-       await sendFile(conn,m,mime,caption,fileName,data.size,{buffer:buffer})
+       await sendFile(conn,m,mime,caption,fileName,size,{buffer:buffer})
     }
 
   } catch (e) {
