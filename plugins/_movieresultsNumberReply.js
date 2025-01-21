@@ -175,12 +175,38 @@ const size = data.size
   }
 }
 
+function checkSizeAndReply(size) {
+  const MAX_FILE_SIZE_MB = 2100; // 2100 MB = 2.1 GB
+  if (size) {
+      const unitToMB = {
+          "GB": 1024,          // 1 GB = 1024 MB
+          "MB": 1,             // 1 MB = 1 MB
+          "KB": 1 / 1024,      // 1 KB = 0.0009765625 MB
+          "TB": 1024 * 1024    // 1 TB = 1,048,576 MB
+      };
+
+      // Match the input size (e.g., "2 GB", "500 KB", "1.5 TB")
+      let sizeMatch = size.match(/([\d.]+)\s*(GB|MB|KB|TB)/i);
+      if (sizeMatch) {
+          const numericValue = parseFloat(sizeMatch[1]); // Extract the number
+          const unit = sizeMatch[2].toUpperCase(); // Extract and normalize the unit
+          const sizeInMB = numericValue * unitToMB[unit]; // Convert size to MB
+
+          // Return true if size is within the limit, otherwise false
+          return sizeInMB <= MAX_FILE_SIZE_MB;
+      }else{
+        // Return false for invalid or missing UNIT
+        return false;
+      }
+  }
+  // Return false for invalid or missing input
+  return false;
+}
+
 const sendFile = async(conn,m,mime,caption,fileName,size,{url,buffer})=>{
 
-  const MAX_FILE_SIZE_MB = 2100; // Maximum file size (2.1 GB)
-  const fileSizeMB = parseFloat(size.replace(/[^\d.]/g, ''))*1000; // Convert file size to a number
-  
-  if (fileSizeMB > MAX_FILE_SIZE_MB) {
+ 
+  if (!checkSizeAndReply(size)) {
     return conn.reply(
       m.chat,
       `❌ *Error: File size exceeds the limit of 2.1 GB.*\n\nFile size: ${size}, \n\n download link: ${url}`,
@@ -203,6 +229,7 @@ if(buffer){
     {
       document: { url },
       caption: caption||"",
+      fileName: fileName,
       mimetype: mime||"video/mp4",
     },
     { quoted: m }
