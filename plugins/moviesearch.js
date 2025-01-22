@@ -2,10 +2,9 @@ import fetch from 'node-fetch';
 
 global.globalMovies = global.globalMovies || {}; // Ensure it doesn't get reinitialized
 
-
 const handler = async (m, { conn, text, command, usedPrefix, quoted }) => {
-  // Handle the "moviesearch" command
-  if (command === 'moviesearch') {
+  // Handle the movie-related commands
+  if (['moviesearch', 'mv', 'movie', 'film', 'filmsearch'].includes(command)) {
     if (!text) throw `Please provide a movie name to search. Example: ${usedPrefix + command} Inception`;
 
     try {
@@ -18,39 +17,40 @@ const handler = async (m, { conn, text, command, usedPrefix, quoted }) => {
       if (!data || !data.results || !Array.isArray(data.results) || data.results.length === 0) {
         throw `Sorry, no movies were found for "${text}".`;
       }
-   // Save the results for this user globally 
+
+      // Save the results for this user globally
+      const searchResults = data.results;
+      const masdata = {
+        type: "moviesearch",
+        data: searchResults,
+      };
+
+      if (!global.globalMovies[m.key.id]) {
+        global.globalMovies[m.key.id] = {};
+      }
+      global.globalMovies[m.key.id] = masdata;
 
       // Format the search results message
-      let message = `🍒 Movie Resulst For:* "${text}"🍒\n\n`;
-      data.results.forEach((movie, index) => {
-        message += `*${index + 1} | ${movie.title}*\n\n`;
-        message += `🍄 *Rating:* ${movie.rating}\n\n`;
-        message += `🍒 *Year:*   ${movie.year}\n\n`;
-        message += `🍄 *Description:*\n\n  ${movie.description.trim().slice(0, 300)}...\n\n`;
-        message += `〽️ *Url:*\n   ${movie.movieLink}\n\n`;
+      let message = `⚡ *Movie Results For:* "${text}" ⚡\n\n*°☘️ Please reply with the number of the movie you want* \n\n`;
+      searchResults.forEach((movie, index) => {
+        message += `*${index + 1} | ${movie.title}*\n`;
+        message += `▢ *Rating:* ${movie.rating}\n`;
+        message += `▢ *Year:* ${movie.year}\n`;
+        message += `▢ *URL:* ${movie.movieLink}\n\n`;
         message += `> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙\n\n`;
       });
 
-      const mas = await m.reply(message.trim()); 
-      const masdata = {}
-      masdata.type = "moviesearch"
-      masdata.data =      data.results
-     if(!global.globalMovies[mas.key.id]){
-      global.globalMovies[mas.key.id] = {}
-     }
-      
-      global.globalMovies[mas.key.id] = masdata
+      const mas = await m.reply(message.trim());
     } catch (e) {
       console.error("Error during movie search:", e);
       return m.reply(e.message || "An error occurred while searching for movies. Please try again later.");
     }
   }
- 
 };
 
 // Plugin metadata
-handler.help = ['moviesearch'];
+handler.help = ['moviesearch', 'mv', 'movie', 'film', 'filmsearch'];
 handler.tags = ['tools', 'movies'];
-handler.command = /^moviesearch$/i; // Trigger for the movie search
+handler.command = /^(moviesearch|mv|movie|film|filmsearch)$/i; // Triggers for all the commands
 
 export default handler;
