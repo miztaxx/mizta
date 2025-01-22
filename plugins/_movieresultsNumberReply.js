@@ -88,16 +88,16 @@ const handleMovies = async(conn,m,movie)=>{
     }
 
     // Build the detailed message
-    let message = `🎬 *Title:* ${details.title}\n\n`;
-    message += `▢ *Description:*\n${details.description}\n\n`;
-    message += `▢ *Release Date:*\n${details.releaseDate}\n\n`;
-    message += `▢ *Country:*\n${details.country}\n\n`;
-    message += `▢ *Runtime:*\n${details.runtime}\n\n`;
-    message += `▢ *Genres:*\n${details.genres.join(", ")}\n\n`;
-    message += `▢ *Download Links:*\n`;
+    let message = `🍄 *°Title:* ${details.title}\n\n`;
+    message += `▢ *°Description:*\n${details.description}\n\n`;
+    message += `▢ *°Release Date:* ${details.releaseDate}\n\n`;
+    message += `▢ *°Country:* ${details.country}\n\n`;
+    message += `▢ *°Runtime:* ${details.runtime}\n\n`;
+    message += `▢ *°Genres:* ${details.genres.join(", ")}\n\n`;
+    message += `▢ *°Download Links:*\n`;
    
     details.downloadLinks.forEach((link, index) => { 
-      message += `   *${index+1} ${link.quality} [ ${link.size} ]*\n`; 
+      message += `   *${index+1} ${link.quality} [ ${link.size} ]*\n\n`; 
    
    
   });
