@@ -28,32 +28,22 @@ const handler = async (m, { conn, usedPrefix }) => {
   const old = performance.now();
   const neww = performance.now();
   const rtime = (neww - old).toFixed(7);
-  const wm = 'The Mystic Bot';
-  const info = ` ${tradutor.texto1[0]}
+  const wm = 'ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙';
+  const info = ` ɪɴꜰᴏ 
 
-  ${tradutor.texto1[1]} Bruno Sobrino
-  ${tradutor.texto1[2]} +5219992095479
-  ${tradutor.texto1[3]} paypal.me/BrunoSob
+  🍄 ᴏᴡɴᴇʀ - ᴍɪᴢᴛᴀ 
+  🍒 ᴄᴏɴᴛᴀᴄᴛ - +94774533771
+  🍄 ᴀʙᴏᴜᴛ ᴜꜱ - https://mizta-x.com
 
-  ${tradutor.texto1[4]} ${rtime}
-  ${tradutor.texto1[5]} ${uptime}
-  ${tradutor.texto1[6]} ${usedPrefix}
-  ${tradutor.texto1[7]} ${self ? "privado" : "público"}
-  ${tradutor.texto1[8]} ${totalusrReg}
-  ${tradutor.texto1[9]} ${totalusr}
-  ${tradutor.texto1[10]} ${(conn.user.jid == global.conn.user.jid ? '' : `Sub-bot de:\n ▢ +${global.conn.user.jid.split`@`[0]}`) || 'No es sub-bot'}
- 
-  ${tradutor.texto1[11]} ${chats.length - groups.length}
-  ${tradutor.texto1[12]} ${groups.length}
-  ${tradutor.texto1[13]} ${chats.length}
- 
-  ${tradutor.texto1[14]} ${autoread ? "activo" : "desactivado"}
-  ${tradutor.texto1[15]} ${restrict ? "activo" : "desactivado"}
-  ${tradutor.texto1[16]} ${pconly ? "activado" : "desactivado"}
-  ${tradutor.texto1[17]} ${gconly ? "activado" : "desactivado"}
-  ${tradutor.texto1[18]} ${antiprivado ? "activado" : "desactivado"}
-  ${tradutor.texto1[19]} ${antiCall ? "activado" : "desactivado"}
-  ${tradutor.texto1[20]} ${modejadibot ? "activado" : "desactivado"}`.trim();
+  ⚡ PING: ${rtime}
+  🍄 Uptime: ${uptime}
+  🍒 Used Prefix: ${usedPrefix}
+  🍄 Bot Mood: ${self ? "privet" : "public"}
+  
+  🍒 Auto Read: ${autoread ? "active" : "deactive"}
+  🍄 Restrict : ${restrict ? "active" : "deactive"}
+  🍒 Personal only:  ${pconly ? "active" : "deactive"}
+  🍄 Group only: ${gconly ? "active" : "deactive"}\n\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙
   const doc = [
     "pdf",
     "zip",
@@ -63,22 +53,22 @@ const handler = async (m, { conn, usedPrefix }) => {
   ];
   const document = doc[Math.floor(Math.random() * doc.length)];
   const Message = {
-    document: { url: `https://github.com/BrunoSobrino/TheMystic-Bot-MD` },
+    document: { url: `https://whatsapp.com/channel/0029Vb3KvHc4inoqAMpdKz03` },
     mimetype: `application/${document}`,
-    fileName: `Documento`,
+    fileName: `ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`,
     fileLength: 99999999999999,
     pageCount: 200,
     contextInfo: {
       forwardingScore: 200,
       isForwarded: true,
       externalAdReply: {
-        mediaUrl: "https://github.com/BrunoSobrino/TheMystic-Bot-MD",
+        mediaUrl: "https://whatsapp.com/channel/0029Vb3KvHc4inoqAMpdKz03",
         mediaType: 2,
         previewType: "pdf",
         title: "The Mystic - Bot",
         body: tradutor.texto2,
         thumbnail: imagen1,
-        sourceUrl: "https://github.com/BrunoSobrino/TheMystic-Bot-MD",
+        sourceUrl: "https://whatsapp.com/channel/0029Vb3KvHc4inoqAMpdKz03",
       },
     },
     caption: info,
