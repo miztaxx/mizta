@@ -88,13 +88,13 @@ const handleMovies = async(conn,m,movie)=>{
     }
 
     // Build the detailed message
-    let message = `🍄 *°Title:* ${details.title}\n\n`;
-    message += `▢ *°Description:*\n${details.description}\n\n`;
-    message += `▢ *°Release Date:* ${details.releaseDate}\n\n`;
-    message += `▢ *°Country:* ${details.country}\n\n`;
-    message += `▢ *°Runtime:* ${details.runtime}\n\n`;
-    message += `▢ *°Genres:* ${details.genres.join(", ")}\n\n`;
-    message += `▢ *°Download Links:*\n`;
+    let message = `🍄 *°Title:* ${details.title}🍄\n\n`;
+    message += `🍒 *°Description:*\n${details.description}\n\n`;
+    message += `🍒 *°Release Date:* ${details.releaseDate}\n\n`;
+    message += `🍒 *°Country:* ${details.country}\n\n`;
+    message += `🍒 *°Runtime:* ${details.runtime}\n\n`;
+    message += `🍒 *°Genres:* ${details.genres.join(", ")}\n\n`;
+    message += `〽️ *°Download Links:*\n`;
    
     details.downloadLinks.forEach((link, index) => { 
       message += `   *${index+1} ${link.quality} [ ${link.size} ]*\n\n`; 
@@ -134,7 +134,7 @@ const downloadMovie = async(conn,m,data,title)=>{
   
   const downloadlInkUrl = `https://cinesubz.mizta-x.com/movie-direct?url=${data.link}`;
 const fileName = title + +"_"+ data.quality?.trim()?.replace(" ","_")
-const caption = `🎬 *Title:* ${title}\n\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`
+const caption = `🍒 *Title:* ${title}\n\n> ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙`
 const size = data.size
   try {
 
