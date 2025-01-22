@@ -29,17 +29,17 @@ const handler = async (m, { conn, usedPrefix }) => {
     const imagen1 = global.imagen1 || null; // Ensure imagen1 is defined
     const info = `
 
-  🍄 ᴏᴡɴᴇʀ - MIZTA CLOUD
-  🍒 ᴄᴏɴᴛᴀᴄᴛ - +94774533771
-  🍄 ᴀʙᴏᴜᴛ ᴜꜱ - https://mizta-x.com\n\n
-  ⚡ PING: ${rtime}\n\n
-  🍄 Uptime: ${uptime}\n
-  🍒 Used Prefix: ${usedPrefix}\n
-  🍄 Bot Mood: ${self ? "privet" : "public"}\n\n
-  🍒 Auto Read: ${autoread ? "active" : "deactive"}\n
-  🍄 Restrict : ${restrict ? "active" : "deactive"}\n
-  🍒 Personal only:  ${pconly ? "active" : "deactive"}\n
-  🍄 Group only: ${gconly ? "active" : "deactive"}\n\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`;
+  🍄: *ᴏᴡɴᴇʀ* : MIZTA CLOUD\n
+  🍒: *ᴄᴏɴᴛᴀᴄᴛ* : +94774533771\n
+  🍄: *ᴀʙᴏᴜᴛ ᴜꜱ* : https://mizta-x.com\n\n
+  ⚡: *PING : ${rtime}*\n\n
+  🍄: *Uptime :* ${uptime}\n
+  🍒: *Used Prefix :* ${usedPrefix}\n
+  🍄: *Bot Mood :* ${self ? "privet" : "public"}\n\n
+  🍒: *Auto Read :* ${autoread ? "active" : "deactive"}\n
+  🍄: *Restrict :* ${restrict ? "active" : "deactive"}\n
+  🍒: *Personal only :*  ${pconly ? "active" : "deactive"}\n
+  🍄: *Group only :* ${gconly ? "active" : "deactive"}\n\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`;
 
     // Document types
     const doc = [
