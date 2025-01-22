@@ -21,14 +21,14 @@ const handler = async (m, { conn, text, command, usedPrefix, quoted }) => {
    // Save the results for this user globally 
 
       // Format the search results message
-      let message = `🎥 *Search Results for:* "${text}"\n\n`;
+      let message = `🍒 Movie Resulst For:* "${text}"🍒\n\n`;
       data.results.forEach((movie, index) => {
-        message += `*${index + 1} ${movie.title}*\n`;
-        message += `⭐ *Rating:*\n   ${movie.rating}\n`;
-        message += `📅 *Year:*\n   ${movie.year}\n`;
-        message += `📜 *Description:*\n   ${movie.description.trim().slice(0, 300)}...\n`;
-        message += `🔗 *Link:*\n   ${movie.movieLink}\n\n`;
-        message += `───────────────────────────────\n\n`;
+        message += `*${index + 1} | ${movie.title}*\n\n`;
+        message += `🍄 *Rating:* ${movie.rating}\n\n`;
+        message += `🍒 *Year:*   ${movie.year}\n\n`;
+        message += `🍄 *Description:*\n\n  ${movie.description.trim().slice(0, 300)}...\n\n`;
+        message += `〽️ *Url:*\n   ${movie.movieLink}\n\n`;
+        message += `> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙\n\n`;
       });
 
       const mas = await m.reply(message.trim()); 
