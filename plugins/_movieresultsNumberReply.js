@@ -89,12 +89,12 @@ const handleMovies = async(conn,m,movie)=>{
 
     // Build the detailed message
     let message = `🎬 *Title:* ${details.title}\n\n`;
-    message += `📜 *Description:*\n${details.description}\n\n`;
-    message += `📅 *Release Date:*\n${details.releaseDate}\n\n`;
-    message += `🌍 *Country:*\n${details.country}\n\n`;
-    message += `⏱️ *Runtime:*\n${details.runtime}\n\n`;
-    message += `🎭 *Genres:*\n${details.genres.join(", ")}\n\n`;
-    message += `⚡ *Download Links:*\n`;
+    message += `▢ *Description:*\n${details.description}\n\n`;
+    message += `▢ *Release Date:*\n${details.releaseDate}\n\n`;
+    message += `▢ *Country:*\n${details.country}\n\n`;
+    message += `▢ *Runtime:*\n${details.runtime}\n\n`;
+    message += `▢ *Genres:*\n${details.genres.join(", ")}\n\n`;
+    message += `▢ *Download Links:*\n`;
    
     details.downloadLinks.forEach((link, index) => { 
       message += `   *${index+1} ${link.quality} [ ${link.size} ]*\n`; 
@@ -102,7 +102,7 @@ const handleMovies = async(conn,m,movie)=>{
    
   });
    
-    message += `\n> ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙`;
+    message += `\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`;
 
 
     // Send the image and message
@@ -134,7 +134,7 @@ const downloadMovie = async(conn,m,data,title)=>{
   
   const downloadlInkUrl = `https://cinesubz.mizta-x.com/movie-direct?url=${data.link}`;
 const fileName = title + +"_"+ data.quality?.trim()?.replace(" ","_")
-const caption = `🎬 *Title:* ${title}\n> ᴍɪᴢᴛʏ ʙᴇᴛᴀ 🌙`
+const caption = `🎬 *Title:* ${title}\n\n> ꜱɪᴍᴘʟᴇ ɪꜱ ʙᴇᴀᴜᴛʏ 🌙`
 const size = data.size
   try {
 
